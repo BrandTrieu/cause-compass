@@ -117,37 +117,6 @@ export default function PreferencesPage() {
         initialPrefs={prefs}
         onSave={handleSave}
       />
-
-      <Card className="mt-8">
-        <CardHeader>
-          <CardTitle>How Scoring Works</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <h3 className="font-semibold mb-2">Personalized Scoring</h3>
-            <p className="text-gray-600 text-sm">
-              Companies are scored based on how their actions align with your weighted preferences. 
-              Higher weights mean those causes have more influence on the overall score.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">Score Interpretation</h3>
-            <ul className="text-gray-600 text-sm space-y-1">
-              <li>• <strong>Aligned (0.3+):</strong> Company generally supports your values</li>
-              <li>• <strong>Mixed (-0.3 to 0.3):</strong> Company has mixed record on your values</li>
-              <li>• <strong>Conflicts (-0.3-):</strong> Company generally opposes your values</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">Data Sources</h3>
-            <p className="text-gray-600 text-sm">
-              All company data comes from verified sources including company reports, 
-              news articles, and third-party assessments. Each fact includes confidence 
-              levels and source citations.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }

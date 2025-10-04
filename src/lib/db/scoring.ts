@@ -55,15 +55,15 @@ export function companyScore(prefs: Prefs, facts: Fact[]): number {
  * Default guest preferences with even weights across all tags
  */
 export const defaultGuestPrefs: Prefs = {
+  lgbtq: 0.5,
+  child_labour: 0.5,
+  data_privacy: 0.5,
+  animal_cruelty: 0.5,
   free_palestine: 0.5,
   russia_ukraine: 0.5,
-  feminism_workplace: 0.5,
-  child_labour: 0.5,
-  lgbtq: 0.5,
-  animal_cruelty: 0.5,
-  environmentally_friendly: 0.5,
   ethical_sourcing: 0.5,
-  data_privacy: 0.5
+  feminism_workplace: 0.5,
+  environmentally_friendly: 0.5
 }
 
 /**

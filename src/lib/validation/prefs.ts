@@ -13,11 +13,33 @@ const validTagKeys = [
   'data_privacy'
 ] as const
 
-// Create a schema for preferences
+// Create a schema for preferences - make values optional and provide defaults
 export const prefsSchema = z.record(
   z.enum(validTagKeys),
-  z.number().min(0).max(1)
-)
+  z.number().min(0).max(1).optional()
+).transform((prefs) => {
+  // Ensure all required keys have the specified default values
+  const defaultPrefs: Record<string, number> = {
+    lgbtq: 0.5,
+    child_labour: 0.5,
+    data_privacy: 0.5,
+    animal_cruelty: 0.5,
+    free_palestine: 0.5,
+    russia_ukraine: 0.5,
+    ethical_sourcing: 0.5,
+    feminism_workplace: 0.5,
+    environmentally_friendly: 0.5
+  }
+  
+  // Override with provided values
+  validTagKeys.forEach(key => {
+    if (prefs[key] !== undefined) {
+      defaultPrefs[key] = prefs[key]!
+    }
+  })
+  
+  return defaultPrefs as Prefs
+})
 
 export type Prefs = z.infer<typeof prefsSchema>
 

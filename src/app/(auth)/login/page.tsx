@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase/client'
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [error, setError] = useState('')
@@ -19,14 +20,36 @@ export default function LoginPage() {
     setIsLoading(true)
     setError('')
 
+    // Validate passwords match for signup
+    if (isSignUp && password !== confirmPassword) {
+      setError('Passwords do not match')
+      setIsLoading(false)
+      return
+    }
+
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
-          password,
+          password
         })
         if (error) throw error
-        setError('Check your email for the confirmation link!')
+        
+        // If signup is successful, initialize user in app_users table
+        if (data.user) {
+          try {
+            await fetch('/api/users/init', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+          } catch (initError) {
+            console.error('Failed to initialize user:', initError)
+            // Don't block the signup flow if user initialization fails
+          }
+          router.push('/dashboard/preferences')
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -35,8 +58,8 @@ export default function LoginPage() {
         if (error) throw error
         router.push('/dashboard/preferences')
       }
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setIsLoading(false)
     }
@@ -45,6 +68,12 @@ export default function LoginPage() {
   const handleGuestMode = () => {
     localStorage.setItem('guest', 'true')
     router.push('/')
+  }
+
+  const toggleSignUpMode = () => {
+    setIsSignUp(!isSignUp)
+    setError('')
+    setConfirmPassword('')
   }
 
   return (
@@ -102,6 +131,24 @@ export default function LoginPage() {
                 />
               </div>
 
+              {isSignUp && (
+                <div>
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground">
+                    Confirm Password
+                  </label>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="mt-1 block w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+                  />
+                </div>
+              )}
+
               {error && (
                 <div className="text-accent-2 text-sm">{error}</div>
               )}
@@ -118,7 +165,7 @@ export default function LoginPage() {
             <div className="mt-4 text-center">
               <button
                 type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
+                onClick={toggleSignUpMode}
                 className="text-sm text-primary hover:text-accent-1"
               >
                 {isSignUp 

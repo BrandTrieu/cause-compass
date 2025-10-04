@@ -15,7 +15,7 @@ export async function GET(
     let prefs: Prefs = defaultGuestPrefs
     if (mode === 'user') {
       try {
-        const supabase = createSupabaseServerClient()
+        const supabase = await createSupabaseServerClient()
         const { data: { user } } = await supabase.auth.getUser()
         
         if (user?.email) {
