@@ -1,8 +1,14 @@
-import { Suspense } from 'react'
+import { Suspense, use } from 'react'
 import { CompanyCard } from '@/components/CompanyCard'
-import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Stance } from '@prisma/client'
+import { SearchErrorHandler } from '@/components/SearchErrorHandler'
+// Define Stance enum locally to avoid import issues
+enum Stance {
+  supports = 'supports',
+  opposes = 'opposes',
+  alleged_violation = 'alleged_violation',
+  neutral = 'neutral'
+}
 
 interface SearchResult {
   id: string
@@ -51,9 +57,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
             <p className="text-gray-600 mb-4">
               Try searching for a different company name or browse our database.
             </p>
-            <Button onClick={() => window.location.href = '/'}>
-              Browse All Companies
-            </Button>
+            <SearchErrorHandler variant="home" />
           </CardContent>
         </Card>
       )
@@ -86,7 +90,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
         </div>
       </div>
     )
-  } catch (error) {
+  } catch {
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -94,9 +98,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
           <p className="text-gray-600 mb-4">
             Something went wrong while searching. Please try again.
           </p>
-          <Button onClick={() => window.location.reload()}>
-            Try Again
-          </Button>
+          <SearchErrorHandler />
         </CardContent>
       </Card>
     )
@@ -134,10 +136,11 @@ function LoadingSkeleton() {
 export default function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; mode?: string }
+  searchParams: Promise<{ q?: string; mode?: string }>
 }) {
-  const query = searchParams.q || ''
-  const mode = (searchParams.mode as 'user' | 'guest') || 'guest'
+  const params = use(searchParams)
+  const query = params.q || ''
+  const mode = (params.mode as 'user' | 'guest') || 'guest'
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

@@ -17,7 +17,9 @@ export default function Home() {
   }
 
   const handleGuestMode = () => {
-    localStorage.setItem('guest', 'true')
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('guest', 'true')
+    }
     router.push('/search')
   }
 

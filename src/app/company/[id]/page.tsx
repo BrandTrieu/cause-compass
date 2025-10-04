@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -9,7 +9,13 @@ import { TagBadge } from '@/components/TagBadge'
 import { SourceList } from '@/components/SourceList'
 import { AlternativeList } from '@/components/AlternativeList'
 import { AI_Summary } from '@/components/AI_Summary'
-import { Stance } from '@prisma/client'
+// Define Stance enum locally to avoid import issues
+enum Stance {
+  supports = 'supports',
+  opposes = 'opposes',
+  alleged_violation = 'alleged_violation',
+  neutral = 'neutral'
+}
 
 interface CompanyDetail {
   id: string
@@ -155,7 +161,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
                               rel="noopener noreferrer"
                               className="text-sm text-blue-600 hover:text-blue-800 underline"
                             >
-                              {new URL(url).hostname}
+                              {typeof window !== 'undefined' ? new URL(url).hostname : url}
                             </a>
                           </li>
                         ))}
@@ -186,7 +192,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
         )}
       </div>
     )
-  } catch (error) {
+  } catch {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card>
@@ -196,10 +202,18 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
               Something went wrong while loading the company details. Please try again.
             </p>
             <div className="flex gap-4 justify-center">
-              <Button onClick={() => window.location.reload()}>
+              <Button onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.reload()
+                }
+              }}>
                 Try Again
               </Button>
-              <Button variant="outline" onClick={() => window.location.href = '/search'}>
+              <Button variant="outline" onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.href = '/search'
+                }
+              }}>
                 Back to Search
               </Button>
             </div>
@@ -240,9 +254,10 @@ export default function CompanyPage({
   searchParams,
 }: {
   params: { id: string }
-  searchParams: { mode?: string }
+  searchParams: Promise<{ mode?: string }>
 }) {
-  const mode = (searchParams.mode as 'user' | 'guest') || 'guest'
+  const resolvedSearchParams = use(searchParams)
+  const mode = (resolvedSearchParams.mode as 'user' | 'guest') || 'guest'
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
