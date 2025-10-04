@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, use } from 'react'
 import { CompanyCard } from '@/components/CompanyCard'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -134,10 +134,11 @@ function LoadingSkeleton() {
 export default function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; mode?: string }
+  searchParams: Promise<{ q?: string; mode?: string }>
 }) {
-  const query = searchParams.q || ''
-  const mode = (searchParams.mode as 'user' | 'guest') || 'guest'
+  const params = use(searchParams)
+  const query = params.q || ''
+  const mode = (params.mode as 'user' | 'guest') || 'guest'
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -240,9 +240,10 @@ export default function CompanyPage({
   searchParams,
 }: {
   params: { id: string }
-  searchParams: { mode?: string }
+  searchParams: Promise<{ mode?: string }>
 }) {
-  const mode = (searchParams.mode as 'user' | 'guest') || 'guest'
+  const resolvedSearchParams = use(searchParams)
+  const mode = (resolvedSearchParams.mode as 'user' | 'guest') || 'guest'
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
