@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  RESTAURANT
+  APPAREL
+  GROCERY
+  TECH
+  FINANCE
+  OTHER
+}
+
+enum Stance {
+  supports
+  opposes
+  alleged_violation
+  neutral
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  category  Category
+  website   String?
+  summary   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  facts     CompanyTagFact[]
+  sources   Source[]
+
+  @@map("companies")
+}
+
+model Tag {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  tag_name    String
+  description String?
+  facts       CompanyTagFact[]
+  sources     Source[]
+
+  @@map("tags")
+}
+
+model CompanyTagFact {
+  id              String    @id @default(uuid())
+  companyId       String
+  tagId           String
+  stance          Stance
+  confidence      Float     // 0..1
+  notes           String?
+  sourceUrls      String[]  // text[]
+  lastVerifiedAt  DateTime?
+  company         Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  tag             Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, tagId])
+  @@map("company_tag_facts")
+}
+
+model Source {
+  id            String    @id @default(uuid())
+  companyId     String?
+  tagId         String?
+  url           String
+  title         String?
+  publisher     String?
+  publishedAt   DateTime?
+  reliability   Float?    // 0..1
+  claimExcerpt  String?
+  company       Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  tag           Tag?      @relation(fields: [tagId], references: [id], onDelete: SetNull)
+  createdAt     DateTime  @default(now())
+
+  @@index([companyId, tagId])
+  @@map("sources")
+}
+
+model AppUser {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  prefsJson Json?    // weights + saved filters
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("app_users")
+}

@@ -1,0 +1,132 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/db/prisma'
+import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const mode = searchParams.get('mode') as 'user' | 'guest' || 'guest'
+
+    // Get user preferences if authenticated
+    let prefs: Prefs = defaultGuestPrefs
+    if (mode === 'user') {
+      try {
+        const supabase = createSupabaseServerClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (user?.email) {
+          const appUser = await prisma.appUser.findUnique({
+            where: { email: user.email }
+          })
+          
+          if (appUser?.prefsJson) {
+            prefs = appUser.prefsJson as Prefs
+          }
+        }
+      } catch (error) {
+        console.error('Auth error:', error)
+        // Fall back to guest mode
+      }
+    }
+
+    // Fetch company with all related data
+    const company = await prisma.company.findUnique({
+      where: { id: params.id },
+      include: {
+        facts: {
+          include: { tag: true }
+        },
+        sources: {
+          orderBy: [
+            { reliability: 'desc' },
+            { publishedAt: 'desc' }
+          ],
+          take: 5
+        }
+      }
+    })
+
+    if (!company) {
+      return NextResponse.json(
+        { error: 'Company not found' },
+        { status: 404 }
+      )
+    }
+
+    // Calculate score
+    const facts: Fact[] = company.facts.map(fact => ({
+      tagKey: fact.tag.key,
+      stance: fact.stance,
+      confidence: fact.confidence
+    }))
+
+    const score = companyScore(prefs, facts)
+
+    // Format facts breakdown
+    const breakdown = company.facts.map(fact => ({
+      tagKey: fact.tag.key,
+      tagName: fact.tag.tag_name,
+      stance: fact.stance,
+      confidence: fact.confidence,
+      notes: fact.notes,
+      sourceUrls: fact.sourceUrls
+    }))
+
+    // Get alternatives (same category, different company, sorted by score)
+    const alternatives = await prisma.company.findMany({
+      where: {
+        category: company.category,
+        id: { not: company.id }
+      },
+      include: {
+        facts: {
+          include: { tag: true }
+        }
+      },
+      take: 5
+    })
+
+    const alternativesWithScores = alternatives.map(alt => {
+      const altFacts: Fact[] = alt.facts.map(fact => ({
+        tagKey: fact.tag.key,
+        stance: fact.stance,
+        confidence: fact.confidence
+      }))
+      
+      const altScore = companyScore(prefs, altFacts)
+      
+      return {
+        id: alt.id,
+        name: alt.name,
+        category: alt.category,
+        summary: alt.summary,
+        score: altScore
+      }
+    })
+
+    // Sort alternatives by score
+    alternativesWithScores.sort((a, b) => b.score - a.score)
+
+    return NextResponse.json({
+      id: company.id,
+      name: company.name,
+      category: company.category,
+      website: company.website,
+      summary: company.summary,
+      score,
+      breakdown,
+      sources: company.sources,
+      alternatives: alternativesWithScores.slice(0, 5)
+    })
+  } catch (error) {
+    console.error('Company detail error:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch company details' },
+      { status: 500 }
+    )
+  }
+}
