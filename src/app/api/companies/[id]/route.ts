@@ -108,8 +108,10 @@ export async function GET(
       }
     })
 
-    // Sort alternatives by score
-    alternativesWithScores.sort((a, b) => b.score - a.score)
+    // Filter alternatives to only show companies with higher scores
+    const betterAlternatives = alternativesWithScores
+      .filter(alt => alt.score > score)
+      .sort((a, b) => b.score - a.score)
 
     return NextResponse.json({
       id: company.id,
@@ -120,7 +122,7 @@ export async function GET(
       score,
       breakdown,
       sources: company.sources,
-      alternatives: alternativesWithScores.slice(0, 5)
+      alternatives: betterAlternatives.slice(0, 5)
     })
   } catch (error) {
     console.error('Company detail error:', error)
