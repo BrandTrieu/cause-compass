@@ -2,6 +2,7 @@ import { Suspense, use } from 'react'
 import { CompanyCard } from '@/components/CompanyCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { SearchErrorHandler } from '@/components/SearchErrorHandler'
+import SearchPageClient from './SearchPageClient'
 // Define Stance enum locally to avoid import issues
 enum Stance {
   supports = 'supports',
@@ -15,6 +16,7 @@ interface SearchResult {
   name: string
   category: string
   summary?: string
+  logoUrl?: string
   score: number
   topTags: Array<{
     tagKey: string
@@ -178,15 +180,5 @@ export default function SearchPage({
 }: {
   searchParams: Promise<{ q?: string; mode?: string }>
 }) {
-  const params = use(searchParams)
-  const query = params.q || ''
-  const mode = (params.mode as 'user' | 'guest') || 'guest'
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Suspense fallback={<LoadingSkeleton />}>
-        <SearchResults query={query} mode={mode} />
-      </Suspense>
-    </div>
-  )
+  return <SearchPageClient searchParams={searchParams} />
 }

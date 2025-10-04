@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,8 +10,32 @@ export async function GET(request: NextRequest) {
 
     console.log('Basic search for:', q)
 
-    // Get user preferences (using guest mode for now)
-    const prefs: Prefs = defaultGuestPrefs
+    // Get user preferences
+    let prefs: Prefs = defaultGuestPrefs
+    const mode = searchParams.get('mode') as 'user' | 'guest' || 'guest'
+    
+    if (mode === 'user') {
+      try {
+        const supabase = await createSupabaseServerClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (user?.email) {
+          const appUser = await prisma.appUser.findUnique({
+            where: { email: user.email }
+          })
+          
+          if (appUser?.prefsJson) {
+            prefs = appUser.prefsJson as Prefs
+            console.log('Using user preferences:', prefs)
+          } else {
+            console.log('No user preferences found, using defaults')
+          }
+        }
+      } catch (error) {
+        console.error('Auth error:', error)
+        // Fall back to guest mode
+      }
+    }
 
     // Search companies with their facts for real scoring
     const companies = await prisma.company.findMany({
@@ -30,9 +55,9 @@ export async function GET(request: NextRequest) {
     console.log('Found companies:', companies.length)
 
     // Calculate real scores using the same logic as company page
-    const results = companies.map(company => {
+    const results = companies.map((company: any) => {
       // Convert facts to the format expected by companyScore
-      const facts: Fact[] = company.facts.map(fact => ({
+      const facts: Fact[] = company.facts.map((fact: any) => ({
         tagKey: fact.tag.key,
         stance: fact.stance,
         confidence: fact.confidence
@@ -43,9 +68,9 @@ export async function GET(request: NextRequest) {
 
       // Get top tags (sorted by confidence)
       const topTags = company.facts
-        .sort((a, b) => b.confidence - a.confidence)
+        .sort((a: any, b: any) => b.confidence - a.confidence)
         .slice(0, 3)
-        .map(fact => ({
+        .map((fact: any) => ({
           tagKey: fact.tag.key,
           stance: fact.stance,
           confidence: fact.confidence
@@ -74,7 +99,7 @@ export async function GET(request: NextRequest) {
 
     // If we found companies, also get related companies from the same categories
     if (results.length > 0 && q.trim()) {
-      const categories = [...new Set(results.map(r => r.category))]
+      const categories = [...new Set(results.map((r: any) => r.category))]
       
       for (const category of categories) {
         const relatedCompanies = await prisma.company.findMany({
@@ -98,7 +123,7 @@ export async function GET(request: NextRequest) {
         // Add related companies with real scoring
         for (const company of relatedCompanies) {
           // Convert facts to the format expected by companyScore
-          const facts: Fact[] = company.facts.map(fact => ({
+          const facts: Fact[] = company.facts.map((fact: any) => ({
             tagKey: fact.tag.key,
             stance: fact.stance,
             confidence: fact.confidence
@@ -109,9 +134,9 @@ export async function GET(request: NextRequest) {
 
           // Get top tags (sorted by confidence)
           const topTags = company.facts
-            .sort((a, b) => b.confidence - a.confidence)
+            .sort((a: any, b: any) => b.confidence - a.confidence)
             .slice(0, 3)
-            .map(fact => ({
+            .map((fact: any) => ({
               tagKey: fact.tag.key,
               stance: fact.stance,
               confidence: fact.confidence
@@ -141,13 +166,14 @@ export async function GET(request: NextRequest) {
     }
 
     // Sort by score (highest first)
-    results.sort((a, b) => b.score - a.score)
+    results.sort((a: any, b: any) => b.score - a.score)
 
     return NextResponse.json(results)
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Basic search error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: 'Failed to search companies', details: error.message },
+      { error: 'Failed to search companies', details: errorMessage },
       { status: 500 }
     )
   }

@@ -15,9 +15,9 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
           {
             'bg-background text-foreground': variant === 'default',
             'bg-secondary text-white': variant === 'secondary',
-            'bg-accent-1 text-white': variant === 'success',
-            'bg-accent-1 text-white': variant === 'warning',
-            'bg-accent-2 text-white': variant === 'destructive',
+            'bg-green-500 text-white': variant === 'success',
+            'bg-yellow-500 text-white': variant === 'warning',
+            'bg-red-500 text-white': variant === 'destructive',
             'border border-primary bg-transparent text-primary': variant === 'outline',
           },
           className
