@@ -95,6 +95,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
                   category={company.category}
                   summary={company.summary}
                   score={company.score}
+                  logoUrl={company.logoUrl}
                   topTags={company.topTags}
                   topSources={company.topSources}
                 />
@@ -119,6 +120,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
                   category={company.category}
                   summary={company.summary}
                   score={company.score}
+                  logoUrl={company.logoUrl}
                   topTags={company.topTags}
                   topSources={company.topSources}
                 />

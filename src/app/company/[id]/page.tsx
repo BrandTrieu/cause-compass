@@ -1,5 +1,6 @@
 import { Suspense, use } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
@@ -23,6 +24,7 @@ interface CompanyDetail {
   category: string
   website?: string
   summary?: string
+  logoUrl?: string
   score: number
   breakdown: Array<{
     tagKey: string
@@ -46,6 +48,7 @@ interface CompanyDetail {
     name: string
     category: string
     summary?: string
+    logoUrl?: string
     score: number
   }>
 }
@@ -79,6 +82,27 @@ const tagMap: Record<string, string> = {
   data_privacy: 'Data Privacy'
 }
 
+// Generate company logo URL or use placeholder
+const getCompanyLogo = (companyName: string, logoUrl?: string) => {
+  if (logoUrl) return logoUrl
+  
+  // Generate logo using a service like Clearbit or use initials
+  const initials = companyName
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+  
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(companyName)}&background=random&color=fff&size=80&bold=true&format=png`
+}
+
+// Check if the logo is an SVG
+const isSvgLogo = (url?: string) => {
+  if (!url) return false
+  return url.includes('.svg') || url.includes('simpleicons.org') || url.includes('worldvectorlogo.com')
+}
+
 async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest' }) {
   try {
     const company = await getCompanyDetails(id, mode)
@@ -94,20 +118,32 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
           </div>
           
           <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">{company.name}</h1>
-              <div className="flex items-center gap-4 mb-4">
-                <Badge variant="outline">{company.category.toLowerCase()}</Badge>
-                {company.website && (
-                  <a
-                    href={company.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:text-accent-1"
-                  >
-                    Visit Website →
-                  </a>
-                )}
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <Image
+                  src={getCompanyLogo(company.name, company.logoUrl)}
+                  alt={`${company.name} logo`}
+                  width={80}
+                  height={80}
+                  className="rounded-lg object-contain"
+                  unoptimized={isSvgLogo(company.logoUrl)}
+                />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold text-foreground mb-2">{company.name}</h1>
+                <div className="flex items-center gap-4 mb-4">
+                  <Badge variant="outline">{company.category.toLowerCase()}</Badge>
+                  {company.website && (
+                    <a
+                      href={company.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:text-accent-1"
+                    >
+                      Visit Website →
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
             <div className="w-64">

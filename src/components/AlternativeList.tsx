@@ -6,6 +6,7 @@ interface Alternative {
   name: string
   category: string
   summary?: string
+  logoUrl?: string
   score: number
 }
 
@@ -30,6 +31,7 @@ export function AlternativeList({ alternatives, className }: AlternativeListProp
             name={alternative.name}
             category={alternative.category}
             summary={alternative.summary}
+            logoUrl={alternative.logoUrl}
             score={alternative.score}
             topTags={[]} // We don't have tag data for alternatives in this context
             topSources={[]}

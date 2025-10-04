@@ -104,6 +104,7 @@ export async function GET(
         name: alt.name,
         category: alt.category,
         summary: alt.summary,
+        logoUrl: alt.logoUrl,
         score: altScore
       }
     })
@@ -119,6 +120,7 @@ export async function GET(
       category: company.category,
       website: company.website,
       summary: company.summary,
+      logoUrl: company.logoUrl,
       score,
       breakdown,
       sources: company.sources,

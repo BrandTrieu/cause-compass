@@ -15,7 +15,10 @@ export async function GET(request: NextRequest) {
     // Search companies with their facts for real scoring
     const companies = await prisma.company.findMany({
       where: {
-        name: { contains: q, mode: 'insensitive' }
+        name: {
+          contains: q,
+          mode: 'insensitive'
+        }
       },
       include: {
         facts: {
@@ -62,6 +65,7 @@ export async function GET(request: NextRequest) {
         name: company.name,
         category: company.category,
         summary: company.summary,
+        logoUrl: company.logoUrl,
         score,
         topTags,
         topSources
@@ -77,7 +81,10 @@ export async function GET(request: NextRequest) {
           where: {
             category: category as any,
             NOT: {
-              name: { contains: q, mode: 'insensitive' }
+              name: {
+                contains: q,
+                mode: 'insensitive'
+              }
             }
           },
           include: {
@@ -124,6 +131,7 @@ export async function GET(request: NextRequest) {
             name: company.name,
             category: company.category,
             summary: company.summary,
+            logoUrl: company.logoUrl,
             score,
             topTags,
             topSources
