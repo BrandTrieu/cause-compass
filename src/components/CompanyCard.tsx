@@ -40,10 +40,10 @@ export function CompanyCard({
   const tagMap: Record<string, string> = {
     free_palestine: 'Free Palestine',
     russia_ukraine: 'Russia Ukraine',
-    feminism_workplace: 'Feminism/Workplace',
-    child_labour: 'Child Labour',
-    lgbtq: 'LGBTQ+',
-    animal_cruelty: 'Animal Cruelty',
+    women_workplace: 'Women in the Workplace',
+    child_labour: 'Against Child Labour',
+    lgbtq: 'LGBTQ Rights',
+    animal_cruelty: 'Against Animal Cruelty',
     environmentally_friendly: 'Environment',
     ethical_sourcing: 'Ethical Sourcing',
     data_privacy: 'Data Privacy'

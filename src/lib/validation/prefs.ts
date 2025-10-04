@@ -3,8 +3,8 @@ import { z } from 'zod'
 // Define the valid tag keys
 const validTagKeys = [
   'free_palestine',
-  'russia_ukraine',
-  'feminism_workplace',
+  'justice_for_ukraine',
+  'women_workplace',
   'child_labour',
   'lgbtq',
   'animal_cruelty',
@@ -25,9 +25,9 @@ export const prefsSchema = z.record(
     data_privacy: 0.5,
     animal_cruelty: 0.5,
     free_palestine: 0.5,
-    russia_ukraine: 0.5,
+    justice_for_ukraine: 0.5,
     ethical_sourcing: 0.5,
-    feminism_workplace: 0.5,
+    women_workplace: 0.5,
     environmentally_friendly: 0.5
   }
   

@@ -13,8 +13,8 @@ interface PreferenceSlidersProps {
 
 const tagLabels: Record<string, string> = {
   free_palestine: 'Free Palestine',
-  russia_ukraine: 'Russia Ukraine',
-  feminism_workplace: 'Feminism/Workplace',
+  justice_for_ukraine: 'Russia Ukraine',
+  women_workplace: 'Feminism/Workplace',
   child_labour: 'Child Labour',
   lgbtq: 'LGBTQ+',
   animal_cruelty: 'Animal Cruelty',
@@ -25,8 +25,8 @@ const tagLabels: Record<string, string> = {
 
 const tagDescriptions: Record<string, string> = {
   free_palestine: 'Support for Palestinian rights and opposition to Israeli occupation',
-  russia_ukraine: 'Position on Russia-Ukraine conflict and support for Ukraine',
-  feminism_workplace: 'Gender equality, women\'s rights, and workplace diversity',
+  justice_for_ukraine: 'Position on Russia-Ukraine conflict and support for Ukraine',
+  women_workplace: 'Gender equality, women\'s rights, and workplace diversity',
   child_labour: 'Opposition to child labor and support for children\'s rights',
   lgbtq: 'Support for LGBTQ+ rights and equality',
   animal_cruelty: 'Opposition to animal cruelty and support for animal welfare',

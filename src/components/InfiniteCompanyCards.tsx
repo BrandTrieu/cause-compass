@@ -11,6 +11,7 @@ import {
   FaFacebook,
   FaMountain,
   FaRunning,
+  FaHamburger,
 } from "react-icons/fa";
 
 interface Company {
@@ -36,13 +37,6 @@ const companies: Company[] = [
     color: "text-orange-500",
   },
   {
-    name: "Patagonia",
-    logoUrl:
-      "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@develop/icons/patagonia.svg",
-    icon: FaMountain,
-    color: "text-green-600",
-  },
-  {
     name: "Starbucks",
     logoUrl:
       "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@develop/icons/starbucks.svg",
@@ -63,6 +57,13 @@ const companies: Company[] = [
     icon: FaFacebook,
     color: "text-blue-600",
   },
+  {
+    name: "McDonald's",
+    logoUrl:
+      "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@develop/icons/mcdonalds.svg",
+    icon: FaHamburger,
+    color: "text-orange-500",
+  }
 ];
 
 export default function InfiniteCompanyCards() {

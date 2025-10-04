@@ -8,10 +8,12 @@ import {
   FaShieldAlt,
   FaHandshake,
   FaFlag,
-  FaFistRaised,
   FaChild,
-  FaHeart,
 } from "react-icons/fa";
+import { IoWomanSharp } from "react-icons/io5";
+import { FaDog } from "react-icons/fa6";
+
+
 
 interface Cause {
   key: string;
@@ -24,7 +26,7 @@ interface Cause {
 const causes: Cause[] = [
   {
     key: "environmentally_friendly",
-    name: "Environment",
+    name: "Environmentally Friendly",
     description: "Climate action and sustainability",
     icon: FaLeaf,
     color: "text-green-600",
@@ -61,22 +63,29 @@ const causes: Cause[] = [
     key: "women_workplace",
     name: "Women in the Workplace",
     description: "Gender equality and workplace diversity",
-    icon: FaFistRaised,
-    color: "text-orange-600",
+    icon: IoWomanSharp,
+    color: "text-pink-600",
   },
   {
     key: "child_labor",
-    name: "Child Labour",
+    name: "Againt Child Labour",
     description: "Opposition to child labor and support for children's rights",
     icon: FaChild,
     color: "text-yellow-600",
   },
   {
     key: "animal_cruelty",
-    name: "Animal Cruelty",
+    name: "Against Animal Cruelty",
     description: "Opposition to animal cruelty and support for animal welfare",
-    icon: FaHeart,
+    icon: FaDog,
     color: "text-pink-500",
+  },
+  {
+    key: "justice_for_ukraine",
+    name: "Justice for Ukraine",
+    description: "Support for Ukraine's sovereignty and territorial integrity",
+    icon: FaFlag,
+    color: "text-blue-600",
   },
 ];
 
