@@ -13,7 +13,7 @@ interface InfiniteScrollCardsProps {
 export default function InfiniteScrollCards({
   children,
   direction = "left",
-  speed = 50,
+  speed = 80,
   className = "",
 }: InfiniteScrollCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);

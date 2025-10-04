@@ -82,7 +82,7 @@ const causes: Cause[] = [
 
 export default function InfiniteCauseCards() {
   return (
-    <InfiniteScrollCards direction="left" speed={20}>
+    <InfiniteScrollCards direction="left" speed={40}>
       {causes.map((cause) => {
         const Icon = cause.icon;
         return (

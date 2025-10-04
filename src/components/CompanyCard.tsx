@@ -51,13 +51,15 @@ export function CompanyCard({
       <Link href={`/company/${id}`}>
         <Card className="hover:shadow-md transition-shadow cursor-pointer">
           <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-sm">{name}</h3>
-              <Badge variant="outline" className="text-xs">
-                {category.toLowerCase()}
-              </Badge>
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-sm mb-1">{name}</h3>
+                <Badge variant="outline" className="text-xs inline-block">
+                  {category.toLowerCase()}
+                </Badge>
+              </div>
             </div>
-            <ScoreBar score={score} className="mb-2" />
+            <ScoreBar score={score} className="mb-3" />
             <div className="flex flex-wrap gap-1">
               {topTags.slice(0, 2).map((tag, index) => (
                 <TagBadge
@@ -79,14 +81,16 @@ export function CompanyCard({
     <Link href={`/company/${id}`}>
       <Card className="hover:shadow-lg transition-shadow cursor-pointer">
         <CardHeader>
-          <div className="flex items-start justify-between">
-            <div>
-              <CardTitle className="text-xl">{name}</CardTitle>
-              <Badge variant="outline" className="mt-1">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-xl mb-2">{name}</CardTitle>
+              <Badge variant="outline" className="inline-block">
                 {category.toLowerCase()}
               </Badge>
             </div>
-            <ScoreBar score={score} className="w-48" />
+            <div className="flex-shrink-0 w-full sm:w-48">
+              <ScoreBar score={score} />
+            </div>
           </div>
         </CardHeader>
         <CardContent>

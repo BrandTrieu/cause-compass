@@ -67,7 +67,7 @@ const companies: Company[] = [
 
 export default function InfiniteCompanyCards() {
   return (
-    <InfiniteScrollCards direction="right" speed={20}>
+    <InfiniteScrollCards direction="right" speed={40}>
       {companies.map((company) => (
         <CompanyCard key={company.name} company={company} />
       ))}
