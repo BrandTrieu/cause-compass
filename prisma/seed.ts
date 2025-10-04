@@ -164,9 +164,17 @@ async function main() {
       category: Category.APPAREL,
       website: "https://www.hm.com",
       summary:
-        "Global fashion retailer offering men’s, women’s, and kids’ clothing, accessories, and basics across physical stores and online.",
+        "Global fashion retailer offering men's, women's, and kids' clothing, accessories, and basics across physical stores and online.",
       logoUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/330px-H%26M-Logo.svg.png",
+    },
+    {
+      name: "Air Canada",
+      category: Category.OTHER,
+      website: "https://www.aircanada.com",
+      summary:
+        "Canada's largest airline providing domestic and international passenger and cargo services with hubs in major Canadian cities.",
+      logoUrl: "https://logo.clearbit.com/aircanada.com",
     },
 
     // Alternatives
@@ -251,7 +259,7 @@ async function main() {
       summary:
         "Sportswear company known for performance running shoes, athletic apparel, and accessories with distribution throughout Canada.",
       logoUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQphWOUUy_D_5Mh0Kl2xjNQAd9cljqUxK-Puw&s",
+        "https://images.seeklogo.com/logo-png/30/2/asics-logo-png_seeklogo-305773.png",
     },
     {
       name: "eBay (Canada)",
@@ -346,7 +354,7 @@ async function main() {
     // Starbucks
     {
       company: "Starbucks",
-      tagKey: "women_workplace",
+      tagKey: "free_palestine",
       stance: Stance.alleged_violation,
       confidence: 0.75,
       notes: "Union/labour-related disputes reported.",
@@ -358,12 +366,37 @@ async function main() {
           reliability: 0.85,
           claimExcerpt: "Reporting on union-related disputes.",
         },
+      ],
+    },
+    {
+      company: "Starbucks",
+      tagKey: "women_workplace",
+      stance: Stance.alleged_violation,
+      confidence: 0.75,
+      notes: "Union/labour-related disputes reported.",
+      sources: [
         {
           url: "https://www.reuters.com/business/world-at-work/starbucks-union-rejects-companys-recent-offer-least-2-annual-pay-raise-2025-04-25/",
           title: "Reuters coverage",
           publisher: "Reuters",
           reliability: 0.9,
           claimExcerpt: "Coverage of union response to company offers.",
+        },
+      ],
+    },
+    {
+      company: "Starbucks",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.7,
+      notes: "Ethical sourcing practices.",
+      sources: [
+        {
+          url: "https://www.starbucks.ca/responsibility/sourcing",
+          title: "Starbucks Responsibility - Sourcing",
+          publisher: "Starbucks",
+          reliability: 0.7,
+          claimExcerpt: "Ethical sourcing practices and commitments.",
         },
       ],
     },
@@ -392,14 +425,30 @@ async function main() {
         },
       ],
     },
+    {
+      company: "Chick-fil-A",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.7,
+      notes: "Ethical sourcing practices.",
+      sources: [
+        {
+          url: "https://www.chick-fil-a.com/global-impact/planet",
+          title: "Chick-fil-A Global Impact - Planet",
+          publisher: "Chick-fil-A",
+          reliability: 0.7,
+          claimExcerpt: "Ethical sourcing and environmental commitments.",
+        },
+      ],
+    },
 
     // SHEIN
     {
       company: "SHEIN",
-      tagKey: "child_labour",
+      tagKey: "environmentally_friendly",
       stance: Stance.alleged_violation,
       confidence: 0.85,
-      notes: "Reports of labour violations in supply chain.",
+      notes: "Reports of environmental violations in supply chain.",
       sources: [
         {
           url: "https://www.antislavery.org/latest/shein-fast-fashion-problem",
@@ -408,27 +457,21 @@ async function main() {
           reliability: 0.8,
           claimExcerpt: "Advocacy page summarizing concerns.",
         },
+      ],
+    },
+    {
+      company: "SHEIN",
+      tagKey: "child_labour",
+      stance: Stance.alleged_violation,
+      confidence: 0.85,
+      notes: "Reports of labour violations in supply chain.",
+      sources: [
         {
           url: "https://www.theguardian.com/business/2025/feb/26/shein-found-two-cases-of-child-labour-at-suppliers-in-2024-firm-tells-uk-mps",
           title: "The Guardian reporting (2025)",
           publisher: "The Guardian",
           reliability: 0.85,
           claimExcerpt: "Report on supplier investigations.",
-        },
-      ],
-    },
-    {
-      company: "SHEIN",
-      tagKey: "ethical_sourcing",
-      stance: Stance.alleged_violation,
-      confidence: 0.8,
-      sources: [
-        {
-          url: "https://www.antislavery.org/latest/shein-fast-fashion-problem",
-          title: "Anti-Slavery International",
-          publisher: "Anti-Slavery International",
-          reliability: 0.8,
-          claimExcerpt: "Supply-chain oversight concerns.",
         },
       ],
     },
@@ -512,6 +555,21 @@ async function main() {
         },
       ],
     },
+    {
+      company: "Amazon",
+      tagKey: "data_privacy",
+      stance: Stance.alleged_violation,
+      confidence: 0.8,
+      sources: [
+        {
+          url: "https://www.usatoday.com/story/money/2025/01/29/amazon-sued-alleged-data-tracking/78022622007/",
+          title: "USA Today - Amazon sued for alleged data tracking",
+          publisher: "USA Today",
+          reliability: 0.8,
+          claimExcerpt: "Report on data tracking lawsuit.",
+        },
+      ],
+    },
 
     // McDonald’s
     {
@@ -530,7 +588,7 @@ async function main() {
       ],
     },
     {
-      company: "McDonald’s",
+      company: "McDonald's",
       tagKey: "women_workplace",
       stance: Stance.alleged_violation,
       confidence: 0.65,
@@ -600,6 +658,45 @@ async function main() {
         },
       ],
     },
+
+    // Air Canada
+    {
+      company: "Air Canada",
+      tagKey: "women_workplace",
+      stance: Stance.alleged_violation,
+      confidence: 0.8,
+      sources: [
+        {
+          url: "https://skiesmag.com/news/air-canada-slapped-with-financial-penalty-for-accessibility-infractions",
+          title: "Skies Magazine - Air Canada accessibility penalty",
+          publisher: "Skies Magazine",
+          reliability: 0.75,
+          claimExcerpt: "Accessibility infractions and penalties.",
+        },
+        {
+          url: "https://www.theguardian.com/world/2023/oct/30/air-canada-wheelchair-disabled-man-drag-himself-off-flight",
+          title: "The Guardian - Air Canada wheelchair incident",
+          publisher: "The Guardian",
+          reliability: 0.85,
+          claimExcerpt: "Accessibility and disability rights violations.",
+        },
+      ],
+    },
+    {
+      company: "Air Canada",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.7,
+      sources: [
+        {
+          url: "https://media.aircanada.com/2024-air-canada-climate-action-plan/",
+          title: "Air Canada Climate Action Plan 2024",
+          publisher: "Air Canada",
+          reliability: 0.7,
+          claimExcerpt: "Climate action and environmental commitments.",
+        },
+      ],
+    },
   ];
 
   // 4) Positive facts for ALTERNATIVES (supports) — using the links you provided
@@ -620,6 +717,15 @@ async function main() {
           claimExcerpt:
             "Program overview: certified coffees, packaging, community.",
         },
+      ],
+    },
+    {
+      company: "Second Cup Café",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.7,
+      notes: "Ethical sourcing practices.",
+      sources: [
         {
           url: "https://secondcup.com/en/our-story",
           title: "Second Cup – Our Story",
@@ -630,33 +736,42 @@ async function main() {
       ],
     },
     {
-      company: "Balzac’s Coffee Roasters",
+      company: "Balzac's Coffee Roasters",
       tagKey: "environmentally_friendly",
       stance: Stance.supports,
       confidence: 0.75,
       notes: "Sustainability practices & certifications.",
       sources: [
         {
+          url: "https://balzacs.com/blogs/news/balzacs-sustainability-practices",
+          title: "Balzac's Sustainability (news/blog)",
+          publisher: "Balzac's Coffee Roasters",
+          reliability: 0.6,
+          claimExcerpt: "Additional detail on sustainability focus.",
+        },
+      ],
+    },
+    {
+      company: "Balzac's Coffee Roasters",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Ethical sourcing practices & certifications.",
+      sources: [
+        {
           url: "https://balzacs.com/pages/balzacs-sustainability-practices",
-          title: "Balzac’s Sustainability Practices",
-          publisher: "Balzac’s Coffee Roasters",
+          title: "Balzac's Sustainability Practices",
+          publisher: "Balzac's Coffee Roasters",
           reliability: 0.7,
           claimExcerpt:
             "LEAF certification, compostable pods, packaging notes.",
-        },
-        {
-          url: "https://balzacs.com/blogs/news/balzacs-sustainability-practices",
-          title: "Balzac’s Sustainability (news/blog)",
-          publisher: "Balzac’s Coffee Roasters",
-          reliability: 0.6,
-          claimExcerpt: "Additional detail on sustainability focus.",
         },
       ],
     },
 
     // Chick-fil-A alternatives
     {
-      company: "Mary Brown’s Chicken",
+      company: "Mary Brown's Chicken",
       tagKey: "ethical_sourcing",
       stance: Stance.supports,
       confidence: 0.7,
@@ -664,12 +779,21 @@ async function main() {
       sources: [
         {
           url: "https://marybrowns.com/wp-content/uploads/International-Brand-Presentation-1.pdf",
-          title: "Mary Brown’s Brand Presentation",
-          publisher: "Mary Brown’s",
+          title: "Mary Brown's Brand Presentation",
+          publisher: "Mary Brown's",
           reliability: 0.6,
           claimExcerpt:
             "Company profile; Canadian roots & sourcing statements.",
         },
+      ],
+    },
+    {
+      company: "Mary Brown's Chicken",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.7,
+      notes: "Environmental friendly practices.",
+      sources: [
         {
           url: "https://www.newswire.ca/news-releases/mary-brown-s-chicken-celebrates-canadian-farming-roots-through-local-partnerships-868356621.html",
           title: "Newswire release — local partnerships",
@@ -681,10 +805,10 @@ async function main() {
     },
     {
       company: "Popeyes Louisiana Kitchen (Canada)",
-      tagKey: "animal_cruelty",
+      tagKey: "environmentally_friendly",
       stance: Stance.supports,
       confidence: 0.7,
-      notes: "Animal welfare/antibiotics policy commitments.",
+      notes: "Environmental sustainability commitments.",
       sources: [
         {
           url: "https://news.popeyes.com/blog-posts/popeyes-r-announces-new-quality-sustainability-commitments",
@@ -695,8 +819,40 @@ async function main() {
         },
       ],
     },
+    {
+      company: "Popeyes Louisiana Kitchen (Canada)",
+      tagKey: "animal_cruelty",
+      stance: Stance.supports,
+      confidence: 0.7,
+      notes: "Animal welfare/antibiotics policy commitments.",
+      sources: [
+        {
+          url: "https://www.newswire.ca/news-releases/popeyes-r-announces-new-quality-amp-sustainability-commitments-859024394.html",
+          title: "Newswire - Popeyes sustainability commitments",
+          publisher: "Newswire",
+          reliability: 0.7,
+          claimExcerpt: "Quality and sustainability commitments.",
+        },
+      ],
+    },
 
     // SHEIN alternatives
+    {
+      company: "Kotn",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.8,
+      notes: "Environmental friendly practices.",
+      sources: [
+        {
+          url: "https://kotn.com/about",
+          title: "Kotn — About",
+          publisher: "Kotn",
+          reliability: 0.65,
+          claimExcerpt: "Overview of sourcing and values.",
+        },
+      ],
+    },
     {
       company: "Kotn",
       tagKey: "ethical_sourcing",
@@ -704,13 +860,6 @@ async function main() {
       confidence: 0.8,
       notes: "B-Corp & sourcing ethos.",
       sources: [
-        {
-          url: "https://kotn.com/about?srsltid=AfmBOopwV5697Dj5_xwS23Y39YpAjZBGfZcc2XHmyvxpf4IfPvBAmpYz",
-          title: "Kotn — About",
-          publisher: "Kotn",
-          reliability: 0.65,
-          claimExcerpt: "Overview of sourcing and values.",
-        },
         {
           url: "https://www.bcorporation.net/en-us/find-a-b-corp/company/kotn/",
           title: "B Lab — Kotn",
@@ -728,6 +877,22 @@ async function main() {
       notes: "Sustainable e-commerce practices (historical operations).",
       sources: [
         {
+          url: "https://directory.goodonyou.eco/brand/frank-and-oak",
+          title: "Good On You - Frank And Oak",
+          publisher: "Good On You",
+          reliability: 0.7,
+          claimExcerpt: "Sustainability rating and practices.",
+        },
+      ],
+    },
+    {
+      company: "Frank And Oak",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.65,
+      notes: "Ethical sourcing practices.",
+      sources: [
+        {
           url: "https://www.yieldify.com/blog/sustainable-e-commerce-with-frank-and-oak/",
           title: "Yieldify case study",
           publisher: "Yieldify",
@@ -740,10 +905,10 @@ async function main() {
     // Nestlé bottled water alternatives
     {
       company: "ESKA",
-      tagKey: "environmentally_friendly",
+      tagKey: "ethical_sourcing",
       stance: Stance.supports,
       confidence: 0.8,
-      notes: "100% rPET bottles; Canadian spring source.",
+      notes: "Ethical sourcing practices.",
       sources: [
         {
           url: "https://www.eskawater.com/recycle-of-life/",
@@ -751,6 +916,38 @@ async function main() {
           publisher: "ESKA",
           reliability: 0.7,
           claimExcerpt: "100% rPET and 100% recyclable bottle communication.",
+        },
+      ],
+    },
+    {
+      company: "ESKA",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.8,
+      notes: "100% rPET bottles; Canadian spring source.",
+      sources: [
+        {
+          url: "https://www.eskawater.com/eco-responsibility/",
+          title: "ESKA — Eco Responsibility",
+          publisher: "ESKA",
+          reliability: 0.7,
+          claimExcerpt: "Environmental responsibility and sustainability practices.",
+        },
+      ],
+    },
+    {
+      company: "Flow Alkaline Spring Water",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Ethical sourcing practices.",
+      sources: [
+        {
+          url: "https://flowhydration.ca/pages/sustainability",
+          title: "Flow Hydration - Sustainability",
+          publisher: "Flow Hydration",
+          reliability: 0.75,
+          claimExcerpt: "Sustainability and ethical sourcing practices.",
         },
       ],
     },
@@ -774,6 +971,22 @@ async function main() {
     // Nike alternatives
     {
       company: "New Balance (Canada)",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Ethical sourcing and responsible leadership.",
+      sources: [
+        {
+          url: "https://www.newbalance.com/responsible-leadership.html",
+          title: "Responsible Leadership (sustainability hub)",
+          publisher: "New Balance",
+          reliability: 0.7,
+          claimExcerpt: "Sustainability/impact themes and targets.",
+        },
+      ],
+    },
+    {
+      company: "New Balance (Canada)",
       tagKey: "environmentally_friendly",
       stance: Stance.supports,
       confidence: 0.75,
@@ -781,17 +994,10 @@ async function main() {
       sources: [
         {
           url: "https://newbalance.newsmarket.com/latest-news/new-balance-launches--reconsidered--resale-platform/s/fdc630d8-393a-4cb2-b864-46dd68c086b3",
-          title: "New Balance launches “Reconsidered”",
+          title: "New Balance launches Reconsidered resale platform",
           publisher: "New Balance Newsroom",
           reliability: 0.75,
           claimExcerpt: "Official announcement of resale program.",
-        },
-        {
-          url: "https://www.newbalance.com/responsible-leadership.html",
-          title: "Responsible Leadership (sustainability hub)",
-          publisher: "New Balance",
-          reliability: 0.7,
-          claimExcerpt: "Sustainability/impact themes and targets.",
         },
       ],
     },
@@ -809,6 +1015,15 @@ async function main() {
           reliability: 0.8,
           claimExcerpt: "KPIs/targets for climate & materials.",
         },
+      ],
+    },
+    {
+      company: "ASICS (Canada)",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.8,
+      notes: "Ethical sourcing and CSR practices.",
+      sources: [
         {
           url: "https://corp.asics.com/en/csr",
           title: "ASICS CSR / Sustainability portal",
@@ -834,6 +1049,15 @@ async function main() {
           reliability: 0.75,
           claimExcerpt: "Circular commerce / environmental initiatives.",
         },
+      ],
+    },
+    {
+      company: "eBay (Canada)",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Ethical sourcing and ESG practices.",
+      sources: [
         {
           url: "https://materials.proxyvote.com/Approved/278642/20250428/AR_607280.PDF",
           title: "eBay Annual/Impact sections (2024)",
@@ -857,6 +1081,15 @@ async function main() {
           reliability: 0.75,
           claimExcerpt: "Targets for emissions/energy.",
         },
+      ],
+    },
+    {
+      company: "Etsy (Canada)",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.8,
+      notes: "Ethical sourcing and ESG practices.",
+      sources: [
         {
           url: "https://investors.etsy.com/impact-reporting/ESG-Reporting-and-Resources/default.aspx",
           title: "Etsy ESG Reporting Hub",
@@ -882,6 +1115,15 @@ async function main() {
           reliability: 0.8,
           claimExcerpt: "Supplier due diligence & human rights statement.",
         },
+      ],
+    },
+    {
+      company: "A&W (Canada)",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.8,
+      notes: "Environmental sustainability and food waste reduction.",
+      sources: [
         {
           url: "https://awincomefund.mediaroom.com/2024-12-02-One-Million-Meals-and-Counting-A-W-Tackles-Food-Waste-and-Hunger-with-Second-Harvest-Partnership",
           title: "A&W x Second Harvest press release",
@@ -892,22 +1134,31 @@ async function main() {
       ],
     },
     {
-      company: "Harvey’s",
+      company: "Harvey's",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Environmental friendly practices and Canadian values.",
+      sources: [
+        {
+          url: "https://www.harveys.ca/en/canadianvalues.html",
+          title: "Harvey's — Our Canadian Values",
+          publisher: "Harvey's",
+          reliability: 0.65,
+          claimExcerpt: "Values, community & sourcing themes.",
+        },
+      ],
+    },
+    {
+      company: "Harvey's",
       tagKey: "ethical_sourcing",
       stance: Stance.supports,
       confidence: 0.75,
       notes: "Certified Sustainable Beef sourcing & Canadian values.",
       sources: [
         {
-          url: "https://www.harveys.ca/en/canadianvalues.html",
-          title: "Harvey’s — Our Canadian Values",
-          publisher: "Harvey’s",
-          reliability: 0.65,
-          claimExcerpt: "Values, community & sourcing themes.",
-        },
-        {
           url: "https://www.canadiancattlemen.ca/news-roundup/harveys-sourcing-certified-sustainable-beef",
-          title: "Canadian Cattlemen — Harvey’s Certified Sustainable Beef",
+          title: "Canadian Cattlemen — Harvey's Certified Sustainable Beef",
           publisher: "Canadian Cattlemen",
           reliability: 0.7,
           claimExcerpt: "CRSB-aligned beef sourcing reported.",
@@ -924,6 +1175,22 @@ async function main() {
       notes: "Corporate responsibility report (ESG).",
       sources: [
         {
+          url: "https://corpo.metro.ca/en/corporate-social-responsibility.html",
+          title: "METRO — Corporate Social Responsibility",
+          publisher: "METRO Inc.",
+          reliability: 0.8,
+          claimExcerpt: "ESG commitments and supply-chain topics.",
+        },
+      ],
+    },
+    {
+      company: "Metro",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Environmental sustainability practices.",
+      sources: [
+        {
           url: "https://corpo.metro.ca/userfiles/file/PDF/2024-cr-report.pdf",
           title: "METRO — Corporate Responsibility Report 2024",
           publisher: "METRO Inc.",
@@ -938,6 +1205,22 @@ async function main() {
       stance: Stance.supports,
       confidence: 0.75,
       notes: "Sustainable Business Report (Empire).",
+      sources: [
+        {
+          url: "https://sobeyssbreport.com/sustainable-business-report/ethical-sustainable-sourcing/",
+          title: "Sobeys — Ethical & Sustainable Sourcing",
+          publisher: "Empire Company Limited",
+          reliability: 0.8,
+          claimExcerpt: "Supplier standards and ESG metrics.",
+        },
+      ],
+    },
+    {
+      company: "Sobeys",
+      tagKey: "environmentally_friendly",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Environmental sustainability practices.",
       sources: [
         {
           url: "https://sobeyssbreport.com/wp-content/uploads/2024/07/Fiscal-2024-Sustainable-Business-Report__EN_.pdf",
@@ -964,6 +1247,15 @@ async function main() {
           reliability: 0.75,
           claimExcerpt: "In-store take-back and reuse/recycling.",
         },
+      ],
+    },
+    {
+      company: "UNIQLO (Canada)",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.75,
+      notes: "Ethical sourcing and sustainability practices.",
+      sources: [
         {
           url: "https://www.fastretailing.com/eng/ir/library/pdf/ar2024_en.pdf",
           title: "Fast Retailing Integrated Report 2024",
@@ -975,10 +1267,10 @@ async function main() {
     },
     {
       company: "Roots",
-      tagKey: "ethical_sourcing",
+      tagKey: "environmentally_friendly",
       stance: Stance.supports,
       confidence: 0.8,
-      notes: "Modern Slavery Report & sustainability page.",
+      notes: "Environmental sustainability practices.",
       sources: [
         {
           url: "https://www.roots.com/ca/en/sustainability.html",
@@ -987,6 +1279,15 @@ async function main() {
           reliability: 0.75,
           claimExcerpt: "Materials and environmental programs.",
         },
+      ],
+    },
+    {
+      company: "Roots",
+      tagKey: "ethical_sourcing",
+      stance: Stance.supports,
+      confidence: 0.8,
+      notes: "Modern Slavery Report & sustainability page.",
+      sources: [
         {
           url: "https://www.roots.com/on/demandware.static/-/Sites-RootsUS-Library/default/dw3d367df0/ROOTS_ASSETS/landing-pages/coc/RootsCorporationModernSlaveryReport2023.pdf",
           title: "Roots Modern Slavery Report 2023",
