@@ -175,7 +175,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
                       {tagMap[item.tagKey] || item.tagName}
                     </h3>
                     <TagBadge
-                      tagName=""
+                      tagName={tagMap[item.tagKey] || item.tagName}
                       stance={item.stance}
                       confidence={item.confidence}
                     />

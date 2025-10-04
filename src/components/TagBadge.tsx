@@ -6,9 +6,10 @@ interface TagBadgeProps {
   stance: Stance
   confidence: number
   className?: string
+  nameOnly?: boolean
 }
 
-export function TagBadge({ tagName, stance, confidence, className }: TagBadgeProps) {
+export function TagBadge({ tagName, stance, confidence, className, nameOnly = false }: TagBadgeProps) {
   const getVariant = (stance: Stance) => {
     switch (stance) {
       case 'supports':
@@ -40,7 +41,7 @@ export function TagBadge({ tagName, stance, confidence, className }: TagBadgePro
 
   return (
     <Badge variant={getVariant(stance)} className={className}>
-      {tagName}: {getStanceText(stance)} ({Math.round(confidence * 100)}%)
+      {nameOnly ? tagName : `${tagName}: ${getStanceText(stance)} (${Math.round(confidence * 100)}%)`}
     </Badge>
   )
 }

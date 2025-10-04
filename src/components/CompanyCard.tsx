@@ -102,6 +102,7 @@ export function CompanyCard({
                   stance={tag.stance}
                   confidence={tag.confidence}
                   className="text-xs"
+                  nameOnly={true}
                 />
               ))}
             </div>
@@ -150,6 +151,7 @@ export function CompanyCard({
                 tagName={tagMap[tag.tagKey] || tag.tagKey}
                 stance={tag.stance}
                 confidence={tag.confidence}
+                nameOnly={true}
               />
             ))}
           </div>
