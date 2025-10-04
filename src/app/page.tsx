@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent } from '@/components/ui/Card'
+import InfiniteCauseCards from '@/components/InfiniteCauseCards'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -27,12 +27,6 @@ export default function Home() {
     'Apple', 'Nike', 'Patagonia', 'Starbucks', 'Tesla', 'Meta'
   ]
 
-  const featuredCauses = [
-    { key: 'environmentally_friendly', name: 'Environment', description: 'Climate action and sustainability' },
-    { key: 'lgbtq', name: 'LGBTQ+ Rights', description: 'Equality and inclusion' },
-    { key: 'data_privacy', name: 'Data Privacy', description: 'Protection of personal information' },
-    { key: 'ethical_sourcing', name: 'Ethical Sourcing', description: 'Fair trade and supply chains' }
-  ]
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -93,16 +87,7 @@ export default function Home() {
       {/* Featured Causes */}
       <div className="mb-16">
         <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">Causes We Track</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredCauses.map((cause) => (
-            <Card key={cause.key} className="text-center">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-lg mb-2 text-foreground">{cause.name}</h3>
-                <p className="text-text-muted text-sm">{cause.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <InfiniteCauseCards />
       </div>
 
       {/* How It Works */}

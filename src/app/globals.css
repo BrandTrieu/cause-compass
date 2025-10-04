@@ -60,3 +60,17 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Infinite scroll animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 10s linear infinite;
+}
