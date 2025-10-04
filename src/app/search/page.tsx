@@ -1,4 +1,3 @@
-import { Suspense, use } from 'react'
 import { CompanyCard } from '@/components/CompanyCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { SearchErrorHandler } from '@/components/SearchErrorHandler'

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { PreferenceSliders } from '@/components/PreferenceSliders'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Toast } from '@/components/ui/Toast'
 import { supabase } from '@/lib/supabase/client'
 import { Prefs } from '@/lib/validation/prefs'
 import { defaultGuestPrefs } from '@/lib/db/scoring'
@@ -15,6 +16,9 @@ export default function PreferencesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success')
   const router = useRouter()
 
   useEffect(() => {
@@ -62,8 +66,18 @@ export default function PreferencesPage() {
       }
 
       setPrefs(newPrefs)
+      
+      // Show success toast
+      setToastMessage('Preferences saved successfully!')
+      setToastType('success')
+      setShowToast(true)
     } catch (error: any) {
       setError(error.message)
+      
+      // Show error toast
+      setToastMessage('Failed to save preferences. Please try again.')
+      setToastType('error')
+      setShowToast(true)
     } finally {
       setIsSaving(false)
     }
@@ -117,6 +131,14 @@ export default function PreferencesPage() {
         initialPrefs={prefs}
         onSave={handleSave}
       />
+
+      {showToast && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   )
 }

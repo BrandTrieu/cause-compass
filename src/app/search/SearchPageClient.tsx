@@ -1,9 +1,11 @@
 'use client'
 
 import { use, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { CompanyCard } from '@/components/CompanyCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { SearchErrorHandler } from '@/components/SearchErrorHandler'
+import { Button } from '@/components/ui/Button'
 import { supabase } from '@/lib/supabase/client'
 
 // Define Stance enum locally to avoid import issues
@@ -194,6 +196,37 @@ function LoadingSkeleton() {
   )
 }
 
+function SearchBar({ initialQuery }: { initialQuery: string }) {
+  const [searchQuery, setSearchQuery] = useState(initialQuery)
+  const router = useRouter()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+    }
+  }
+
+  return (
+    <div className="mb-8">
+      <form onSubmit={handleSearch} className="max-w-2xl">
+        <div className="flex gap-4">
+          <input
+            type="text"
+            placeholder="Search for a company..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground"
+          />
+          <Button type="submit" size="lg">
+            Search
+          </Button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
 export default function SearchPageClient({
   searchParams,
 }: {
@@ -234,6 +267,7 @@ export default function SearchPageClient({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SearchBar initialQuery={query} />
       <SearchResults query={query} mode={mode} />
     </div>
   )
