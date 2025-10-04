@@ -61,16 +61,22 @@ body {
   overflow: hidden;
 }
 
-/* Infinite scroll animation */
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
+  to {
+    transform: translate(-50%);
   }
-  100% {
-    transform: translateX(-33.333%);
+}
+
+@keyframes scroll-reverse {
+  to {
+    transform: translate(50%);
   }
 }
 
 .animate-scroll {
-  animation: scroll 10s linear infinite;
+  animation: scroll var(--animation-duration, 50s) linear infinite;
+}
+
+.animate-scroll-reverse {
+  animation: scroll-reverse var(--animation-duration, 50s) linear infinite;
 }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import InfiniteCauseCards from '@/components/InfiniteCauseCards'
+import InfiniteCompanyCards from '@/components/InfiniteCompanyCards'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -23,9 +24,6 @@ export default function Home() {
     router.push('/search')
   }
 
-  const popularSearches = [
-    'Apple', 'Nike', 'Patagonia', 'Starbucks', 'Tesla', 'Meta'
-  ]
 
 
   return (
@@ -68,20 +66,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Popular Searches */}
+      {/* Popular Companies */}
       <div className="mb-16">
-        <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">Popular Searches</h2>
-        <div className="flex flex-wrap justify-center gap-3">
-          {popularSearches.map((company) => (
-            <button
-              key={company}
-              onClick={() => router.push(`/search?q=${encodeURIComponent(company)}`)}
-              className="px-4 py-2 bg-white border border-border rounded-full hover:bg-background transition-colors text-foreground"
-            >
-              {company}
-            </button>
-          ))}
-        </div>
+        <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">Popular Companies</h2>
+        <InfiniteCompanyCards />
       </div>
 
       {/* Featured Causes */}
