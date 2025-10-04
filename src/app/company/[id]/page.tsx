@@ -1,4 +1,4 @@
-import { Suspense, use } from 'react'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -10,6 +10,7 @@ import { TagBadge } from '@/components/TagBadge'
 import { SourceList } from '@/components/SourceList'
 import { AlternativeList } from '@/components/AlternativeList'
 import { AI_Summary } from '@/components/AI_Summary'
+import CompanyPageClient from './CompanyPageClient'
 // Define Stance enum locally to avoid import issues
 enum Stance {
   supports = 'supports',
@@ -143,6 +144,9 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
                       Visit Website →
                     </a>
                   )}
+                </div>
+                <div className="text-sm text-text-muted mb-4">
+                  {mode === 'user' ? '✨ Personalized to your values' : '📊 Based on overall ethicality'}
                 </div>
               </div>
             </div>
@@ -285,19 +289,26 @@ function LoadingSkeleton() {
   )
 }
 
-export default function CompanyPage({
+export default async function CompanyPage({
   params,
   searchParams,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
   searchParams: Promise<{ mode?: string }>
 }) {
-  const resolvedSearchParams = use(searchParams)
+  const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
   const mode = (resolvedSearchParams.mode as 'user' | 'guest') || 'guest'
+  
+  // If no mode parameter, show the client component to detect auth
+  if (!resolvedSearchParams.mode) {
+    return <CompanyPageClient id={resolvedParams.id} />
+  }
 
+  // If mode is provided, show the server component directly
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <CompanyDetails id={params.id} mode={mode} />
+      <CompanyDetails id={resolvedParams.id} mode={mode} />
     </Suspense>
   )
 }

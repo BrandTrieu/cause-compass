@@ -5,9 +5,10 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const { searchParams } = new URL(request.url)
     const mode = searchParams.get('mode') as 'user' | 'guest' || 'guest'
 
@@ -35,7 +36,7 @@ export async function GET(
 
     // Fetch company with all related data
     const company = await prisma.company.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         facts: {
           include: { tag: true }
@@ -65,6 +66,10 @@ export async function GET(
     }))
 
     const score = companyScore(prefs, facts)
+    
+    console.log(`Company ${company.name} - Mode: ${mode}, Score: ${score}`)
+    console.log('User preferences:', prefs)
+    console.log('Company facts:', facts)
 
     // Format facts breakdown
     const breakdown = company.facts.map(fact => ({
