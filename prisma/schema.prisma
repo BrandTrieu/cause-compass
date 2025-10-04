@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Category {
@@ -32,6 +33,7 @@ model Company {
   category  Category
   website   String?
   summary   String?
+  logoUrl   String?  // URL to company logo (SVG, PNG, etc.)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   facts     CompanyTagFact[]

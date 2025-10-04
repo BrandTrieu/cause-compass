@@ -1,330 +1,452 @@
+// prisma/seed.ts
 import { PrismaClient, Category, Stance } from '@prisma/client'
-import { v4 as uuidv4 } from 'uuid'
 
 const prisma = new PrismaClient()
 
 async function main() {
   console.log('🌱 Starting database seed...')
 
-  // Clear existing data
+  // 0) Clear existing data (order matters for FKs)
   await prisma.source.deleteMany()
   await prisma.companyTagFact.deleteMany()
   await prisma.company.deleteMany()
   await prisma.tag.deleteMany()
   await prisma.appUser.deleteMany()
 
-  // Create Tags
-  const tags = await Promise.all([
-    prisma.tag.create({
-      data: {
-        key: 'free_palestine',
-        tag_name: 'Free Palestine',
-        description: 'Support for Palestinian rights and opposition to Israeli occupation'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'russia_ukraine',
-        tag_name: 'Russia Ukraine',
-        description: 'Position on Russia-Ukraine conflict and support for Ukraine'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'feminism_workplace',
-        tag_name: 'Feminism/Women in the workplace',
-        description: 'Gender equality, women\'s rights, and workplace diversity'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'child_labour',
-        tag_name: 'Child Labour',
-        description: 'Opposition to child labor and support for children\'s rights'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'lgbtq',
-        tag_name: 'LGBTQ',
-        description: 'Support for LGBTQ+ rights and equality'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'animal_cruelty',
-        tag_name: 'Animal Cruelty',
-        description: 'Opposition to animal cruelty and support for animal welfare'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'environmentally_friendly',
-        tag_name: 'Environmentally Friendly',
-        description: 'Environmental sustainability and climate action'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'ethical_sourcing',
-        tag_name: 'Ethical Sourcing',
-        description: 'Ethical supply chain and fair trade practices'
-      }
-    }),
-    prisma.tag.create({
-      data: {
-        key: 'data_privacy',
-        tag_name: 'Data Privacy',
-        description: 'Protection of user data and privacy rights'
-      }
-    })
-  ])
-
-  console.log(`✅ Created ${tags.length} tags`)
-
-  // Create Companies
-  const companies = await Promise.all([
-    prisma.company.create({
-      data: {
-        name: 'Patagonia',
-        category: Category.APPAREL,
-        website: 'https://patagonia.com',
-        summary: 'Outdoor clothing company known for environmental activism and sustainable practices'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Nike',
-        category: Category.APPAREL,
-        website: 'https://nike.com',
-        summary: 'Global sportswear brand with mixed record on labor practices and social issues'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Apple',
-        category: Category.TECH,
-        website: 'https://apple.com',
-        summary: 'Technology company with strong privacy stance but supply chain concerns'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Meta',
-        category: Category.TECH,
-        website: 'https://meta.com',
-        summary: 'Social media company with significant data privacy controversies'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Whole Foods',
-        category: Category.GROCERY,
-        website: 'https://wholefoodsmarket.com',
-        summary: 'Organic grocery chain owned by Amazon, known for sustainable products'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Walmart',
-        category: Category.GROCERY,
-        website: 'https://walmart.com',
-        summary: 'Retail giant with mixed record on labor rights and environmental practices'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Starbucks',
-        category: Category.RESTAURANT,
-        website: 'https://starbucks.com',
-        summary: 'Coffee chain with progressive social policies but labor disputes'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Chick-fil-A',
-        category: Category.RESTAURANT,
-        website: 'https://chick-fil-a.com',
-        summary: 'Fast food chain with conservative values and LGBTQ+ controversies'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Goldman Sachs',
-        category: Category.FINANCE,
-        website: 'https://goldmansachs.com',
-        summary: 'Investment bank with mixed record on social responsibility'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Ben & Jerry\'s',
-        category: Category.GROCERY,
-        website: 'https://benjerry.com',
-        summary: 'Ice cream company known for progressive social activism'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'Tesla',
-        category: Category.TECH,
-        website: 'https://tesla.com',
-        summary: 'Electric vehicle company with environmental focus but labor concerns'
-      }
-    }),
-    prisma.company.create({
-      data: {
-        name: 'H&M',
-        category: Category.APPAREL,
-        website: 'https://hm.com',
-        summary: 'Fast fashion retailer with sustainability initiatives but labor issues'
-      }
-    })
-  ])
-
-  console.log(`✅ Created ${companies.length} companies`)
-
-  // Create CompanyTagFacts
-  const facts = [
-    // Patagonia - mostly positive
-    { company: 'Patagonia', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.95, notes: '1% for the Planet founder, carbon neutral operations' },
-    { company: 'Patagonia', tag: 'ethical_sourcing', stance: Stance.supports, confidence: 0.9, notes: 'Fair Trade Certified products, supply chain transparency' },
-    { company: 'Patagonia', tag: 'lgbtq', stance: Stance.supports, confidence: 0.85, notes: 'Progressive workplace policies and public support' },
-    { company: 'Patagonia', tag: 'feminism_workplace', stance: Stance.supports, confidence: 0.8, notes: 'Gender equality initiatives and women in leadership' },
-
-    // Nike - mixed
-    { company: 'Nike', tag: 'child_labour', stance: Stance.alleged_violation, confidence: 0.7, notes: 'Past controversies with supplier factories' },
-    { company: 'Nike', tag: 'feminism_workplace', stance: Stance.supports, confidence: 0.8, notes: 'Strong support for women athletes and employees' },
-    { company: 'Nike', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.6, notes: 'Sustainability initiatives but still room for improvement' },
-
-    // Apple - mixed
-    { company: 'Apple', tag: 'data_privacy', stance: Stance.supports, confidence: 0.9, notes: 'Strong privacy stance, end-to-end encryption' },
-    { company: 'Apple', tag: 'child_labour', stance: Stance.alleged_violation, confidence: 0.6, notes: 'Supplier audits but ongoing concerns' },
-    { company: 'Apple', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.7, notes: 'Carbon neutral goals and renewable energy' },
-
-    // Meta - mostly negative
-    { company: 'Meta', tag: 'data_privacy', stance: Stance.opposes, confidence: 0.9, notes: 'Multiple privacy scandals and data misuse' },
-    { company: 'Meta', tag: 'lgbtq', stance: Stance.supports, confidence: 0.7, notes: 'Public support but platform moderation issues' },
-
-    // Whole Foods - mixed
-    { company: 'Whole Foods', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.8, notes: 'Organic focus and sustainability initiatives' },
-    { company: 'Whole Foods', tag: 'ethical_sourcing', stance: Stance.supports, confidence: 0.7, notes: 'Local sourcing and fair trade products' },
-
-    // Walmart - mostly negative
-    { company: 'Walmart', tag: 'child_labour', stance: Stance.alleged_violation, confidence: 0.6, notes: 'Supplier monitoring but ongoing issues' },
-    { company: 'Walmart', tag: 'feminism_workplace', stance: Stance.opposes, confidence: 0.7, notes: 'Gender discrimination lawsuits and pay gaps' },
-    { company: 'Walmart', tag: 'environmentally_friendly', stance: Stance.opposes, confidence: 0.6, notes: 'Limited environmental initiatives' },
-
-    // Starbucks - mixed
-    { company: 'Starbucks', tag: 'lgbtq', stance: Stance.supports, confidence: 0.9, notes: 'Strong public support and inclusive policies' },
-    { company: 'Starbucks', tag: 'feminism_workplace', stance: Stance.supports, confidence: 0.8, notes: 'Women in leadership and equal pay initiatives' },
-    { company: 'Starbucks', tag: 'ethical_sourcing', stance: Stance.supports, confidence: 0.7, notes: 'Fair trade coffee and ethical sourcing' },
-
-    // Chick-fil-A - mostly negative
-    { company: 'Chick-fil-A', tag: 'lgbtq', stance: Stance.opposes, confidence: 0.9, notes: 'Historical donations to anti-LGBTQ organizations' },
-    { company: 'Chick-fil-A', tag: 'feminism_workplace', stance: Stance.opposes, confidence: 0.7, notes: 'Conservative values and limited diversity' },
-
-    // Goldman Sachs - mixed
-    { company: 'Goldman Sachs', tag: 'feminism_workplace', stance: Stance.supports, confidence: 0.6, notes: 'Diversity initiatives but still male-dominated' },
-    { company: 'Goldman Sachs', tag: 'environmentally_friendly', stance: Stance.opposes, confidence: 0.7, notes: 'Fossil fuel investments and limited green finance' },
-
-    // Ben & Jerry's - mostly positive
-    { company: 'Ben & Jerry\'s', tag: 'lgbtq', stance: Stance.supports, confidence: 0.95, notes: 'Long history of LGBTQ+ support and activism' },
-    { company: 'Ben & Jerry\'s', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.9, notes: 'Climate justice advocacy and sustainable practices' },
-    { company: 'Ben & Jerry\'s', tag: 'ethical_sourcing', stance: Stance.supports, confidence: 0.85, notes: 'Fair trade ingredients and social justice' },
-
-    // Tesla - mixed
-    { company: 'Tesla', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.9, notes: 'Electric vehicles and renewable energy' },
-    { company: 'Tesla', tag: 'feminism_workplace', stance: Stance.opposes, confidence: 0.7, notes: 'Workplace discrimination allegations' },
-
-    // H&M - mixed
-    { company: 'H&M', tag: 'child_labour', stance: Stance.alleged_violation, confidence: 0.6, notes: 'Supplier monitoring but ongoing concerns' },
-    { company: 'H&M', tag: 'environmentally_friendly', stance: Stance.supports, confidence: 0.7, notes: 'Sustainability initiatives and recycling programs' }
+  // 1) Seed Tags (from your schema/example)
+  const tagDefs = [
+    { key: 'free_palestine',         tag_name: 'Free Palestine',              description: 'Support for Palestinian rights and opposition to Israeli occupation' },
+    { key: 'russia_ukraine',         tag_name: 'Russia Ukraine',              description: 'Position on Russia-Ukraine conflict and support for Ukraine' },
+    { key: 'feminism_workplace',     tag_name: 'Feminism/Women in the workplace', description: 'Gender equality, women\'s rights, and workplace diversity' },
+    { key: 'child_labour',           tag_name: 'Child Labour',                description: 'Opposition to child labor and support for children\'s rights' },
+    { key: 'lgbtq',                  tag_name: 'LGBTQ',                       description: 'Support for LGBTQ+ rights and equality' },
+    { key: 'animal_cruelty',         tag_name: 'Animal Cruelty',              description: 'Opposition to animal cruelty and support for animal welfare' },
+    { key: 'environmentally_friendly', tag_name: 'Environmentally Friendly',  description: 'Environmental sustainability and climate action' },
+    { key: 'ethical_sourcing',       tag_name: 'Ethical Sourcing',            description: 'Ethical supply chain and fair trade practices' },
+    { key: 'data_privacy',           tag_name: 'Data Privacy',                description: 'Protection of user data and privacy rights' },
   ]
 
-  for (const fact of facts) {
-    const company = companies.find(c => c.name === fact.company)
-    const tag = tags.find(t => t.key === fact.tag)
-    
-    if (company && tag) {
-      await prisma.companyTagFact.create({
-        data: {
-          companyId: company.id,
-          tagId: tag.id,
-          stance: fact.stance,
-          confidence: fact.confidence,
-          notes: fact.notes,
-          sourceUrls: [`https://example.com/source-${uuidv4()}`],
-          lastVerifiedAt: new Date()
-        }
-      })
-    }
+  const tags = await Promise.all(
+    tagDefs.map(t => prisma.tag.create({ data: t }))
+  )
+  const tagByKey = new Map(tags.map(t => [t.key, t]))
+  console.log(`✅ Tags created: ${tags.length}`)
+
+  // 2) Seed Companies (controversial + alternatives)
+  // NOTE: Amazon category corrected to OTHER (your pasted block said APPAREL)
+  const companyDefs = [
+    // Controversial
+    {
+      name: 'Starbucks',
+      category: Category.RESTAURANT,
+      website: 'https://www.starbucks.com',
+      summary: 'Global coffeehouse company offering espresso beverages, brewed coffee, teas, and light food items, with thousands of cafés worldwide.',
+      logoUrl: 'https://cdn.simpleicons.org/starbucks',
+    },
+    {
+      name: 'Chick-fil-A',
+      category: Category.RESTAURANT,
+      website: 'https://www.chick-fil-a.com',
+      summary: 'Quick-service restaurant brand specializing in chicken sandwiches, nuggets, and salads, with dine-in and drive-thru service.',
+      logoUrl: 'https://cdn.simpleicons.org/chickfila',
+    },
+    {
+      name: 'SHEIN',
+      category: Category.APPAREL,
+      website: 'https://www.shein.com',
+      summary: 'Online fashion and lifestyle retailer offering a wide range of apparel, accessories, and home goods through its e-commerce platform.',
+      logoUrl: 'https://cdn.simpleicons.org/shein',
+    },
+    {
+      name: 'Nestlé Bottled Water',
+      category: Category.GROCERY,
+      website: 'https://www.nestle.com',
+      summary: 'Global food and beverage company that has marketed several bottled water brands internationally.',
+      logoUrl: 'https://cdn.worldvectorlogo.com/logos/nestle-4.svg',
+    },
+    {
+      name: 'Nike',
+      category: Category.APPAREL,
+      website: 'https://www.nike.com',
+      summary: 'Global athletic company that designs, markets, and sells footwear, apparel, equipment, and accessories across sport and lifestyle categories.',
+      logoUrl: 'https://cdn.simpleicons.org/nike',
+    },
+    {
+      name: 'Amazon',
+      category: Category.OTHER, // corrected
+      website: 'https://www.amazon.ca',
+      summary: 'Multinational technology company operating a large e-commerce marketplace, cloud services, and digital content platforms.',
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg',
+    },
+    {
+      name: 'McDonald’s',
+      category: Category.RESTAURANT,
+      website: 'https://www.mcdonalds.com/ca/en-ca.html',
+      summary: 'International quick-service restaurant brand serving burgers, chicken items, beverages, and breakfast across thousands of locations.',
+      logoUrl: 'https://cdn.simpleicons.org/mcdonalds',
+    },
+    {
+      name: 'Loblaws',
+      category: Category.GROCERY,
+      website: 'https://www.loblaws.ca',
+      summary: 'Canadian supermarket chain offering groceries, pharmacy services, and household goods through stores and online shopping.',
+      logoUrl: 'https://logo.clearbit.com/loblaws.ca',
+    },
+    {
+      name: 'H&M',
+      category: Category.APPAREL,
+      website: 'https://www.hm.com',
+      summary: 'Global fashion retailer offering men’s, women’s, and kids’ clothing, accessories, and basics across physical stores and online.',
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/330px-H%26M-Logo.svg.png',
+    },
+
+    // Alternatives (added as companies; no facts)
+    {
+      name: 'Second Cup Café',
+      category: Category.RESTAURANT,
+      website: 'https://secondcup.com',
+      summary: 'Canadian specialty coffee retailer operating cafés across the country, serving espresso drinks, brewed coffee, and baked goods.',
+      logoUrl: 'https://logo.clearbit.com/secondcup.com',
+    },
+    {
+      name: 'Balzac’s Coffee Roasters',
+      category: Category.RESTAURANT,
+      website: 'https://www.balzacs.com',
+      summary: 'Ontario-based coffee roaster and café chain known for handcrafted beverages, whole-bean coffee, and café fare.',
+      logoUrl: 'https://logo.clearbit.com/balzacs.com',
+    },
+    {
+      name: 'Mary Brown’s Chicken',
+      category: Category.RESTAURANT,
+      website: 'https://www.marybrowns.com',
+      summary: 'Canadian quick-serve chain offering fried chicken, sandwiches, and sides, with locations across the country.',
+      logoUrl: 'https://logo.clearbit.com/marybrowns.com',
+    },
+    {
+      name: 'Popeyes Louisiana Kitchen (Canada)',
+      category: Category.RESTAURANT,
+      website: 'https://www.popeyeschicken.ca',
+      summary: 'Fast-service restaurant known for fried chicken, sandwiches, and Southern-inspired side dishes, operating widely in Canada.',
+      logoUrl: 'https://logo.clearbit.com/popeyeschicken.ca',
+    },
+    {
+      name: 'Kotn',
+      category: Category.APPAREL,
+      website: 'https://kotn.com',
+      summary: 'Canadian apparel brand offering everyday clothing and basics, with a focus on cotton garments and modern design.',
+      logoUrl: 'https://logo.clearbit.com/kotn.com',
+    },
+    {
+      name: 'Frank And Oak',
+      category: Category.APPAREL,
+      website: 'https://www.frankandoak.com',
+      summary: 'Canadian clothing label providing contemporary men’s and women’s collections, outerwear, and wardrobe essentials.',
+      logoUrl: 'https://logo.clearbit.com/frankandoak.com',
+    },
+    {
+      name: 'ESKA',
+      category: Category.GROCERY,
+      website: 'https://www.eskawater.com',
+      summary: 'Quebec spring water brand; bottles made from 100% recycled, recyclable PET (rPET) sourced from regional recycling streams.',
+      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTic21yf3_LXivP1sTnACLrLkTRB-1bj--8LA&s',
+    },
+    {
+      name: 'Flow Alkaline Spring Water',
+      category: Category.GROCERY,
+      website: 'https://flowhydration.ca',
+      summary: 'Canadian alkaline spring water from an artesian source in Ontario, packaged in paper-based Tetra Pak cartons.',
+      logoUrl: 'https://logo.clearbit.com/flowhydration.ca',
+    },
+    {
+      name: 'New Balance (Canada)',
+      category: Category.APPAREL,
+      website: 'https://www.newbalance.ca',
+      summary: 'Athletic footwear and apparel company offering running, training, and lifestyle products through retail and online channels.',
+      logoUrl: 'https://cdn.simpleicons.org/newbalance',
+    },
+    {
+      name: 'ASICS (Canada)',
+      category: Category.APPAREL,
+      website: 'https://www.asics.com/ca',
+      summary: 'Sportswear company known for performance running shoes, athletic apparel, and accessories with distribution throughout Canada.',
+      logoUrl: 'https://images.seeklogo.com/logo-png/30/2/asics-logo-png_seeklogo-305773.png',
+    },
+    {
+      name: 'eBay (Canada)',
+      category: Category.OTHER,
+      website: 'https://www.ebay.ca',
+      summary: 'Online marketplace enabling consumer-to-consumer and business-to-consumer sales of new and pre-owned goods.',
+      logoUrl: 'https://cdn.simpleicons.org/ebay',
+    },
+    {
+      name: 'Etsy (Canada)',
+      category: Category.OTHER,
+      website: 'https://www.etsy.com/ca',
+      summary: 'Global marketplace for handmade goods, vintage items, and craft supplies featuring independent sellers.',
+      logoUrl: 'https://cdn.simpleicons.org/etsy',
+    },
+    {
+      name: 'A&W (Canada)',
+      category: Category.RESTAURANT,
+      website: 'https://aw.ca',
+      summary: 'Canadian quick-service chain offering burgers, chicken, and root beer with dine-in and drive-thru options nationwide.',
+      logoUrl: 'https://logo.clearbit.com/aw.ca',
+    },
+    {
+      name: 'Harvey’s',
+      category: Category.RESTAURANT,
+      website: 'https://www.harveys.ca',
+      summary: 'Canadian fast-food restaurant known for build-your-own burgers and grilled items with locations across the country.',
+      logoUrl: 'https://logo.clearbit.com/harveys.ca',
+    },
+    {
+      name: 'Metro',
+      category: Category.GROCERY,
+      website: 'https://www.metro.ca',
+      summary: 'Canadian grocery retailer operating supermarkets and pharmacies with a wide range of fresh foods and everyday essentials.',
+      logoUrl: 'https://logo.clearbit.com/metro.ca',
+    },
+    {
+      name: 'Sobeys',
+      category: Category.GROCERY,
+      website: 'https://www.sobeys.com',
+      summary: 'National grocery chain providing fresh produce, meat, bakery, and prepared foods through various store banners.',
+      logoUrl: 'https://logo.clearbit.com/sobeys.com',
+    },
+    {
+      name: 'UNIQLO (Canada)',
+      category: Category.APPAREL,
+      website: 'https://www.uniqlo.com/ca',
+      summary: 'Apparel retailer known for everyday clothing, functional basics, and seasonal collections available online and in stores.',
+      logoUrl: 'https://cdn.simpleicons.org/uniqlo',
+    },
+    {
+      name: 'Roots',
+      category: Category.APPAREL,
+      website: 'https://www.roots.com',
+      summary: 'Canadian lifestyle brand featuring sweats, leather goods, and casual apparel with retail and e-commerce presence.',
+      logoUrl: 'https://logo.clearbit.com/roots.com',
+    },
+  ]
+
+  const companies = await Promise.all(
+    companyDefs.map(c => prisma.company.create({ data: c }))
+  )
+  const companyByName = new Map(companies.map(c => [c.name, c]))
+  console.log(`✅ Companies created: ${companies.length}`)
+
+  // 3) Facts for controversial companies + attach proof links
+  type FactInput = {
+    company: string
+    tagKey: string
+    stance: Stance
+    confidence: number
+    notes?: string
+    sourceUrls: string[]
   }
 
-  console.log(`✅ Created ${facts.length} company tag facts`)
+  const factInputs: FactInput[] = [
+    // Starbucks — labour/union items -> feminism_workplace (alleged_violation)
+    {
+      company: 'Starbucks',
+      tagKey: 'feminism_workplace',
+      stance: Stance.alleged_violation,
+      confidence: 0.75,
+      notes: 'Union/labour-related disputes reported.',
+      sourceUrls: [
+        'https://apnews.com/article/starbucks-workers-united-union-lawsuit-israel-palestinian-f212a994fef67f122854a4df7e5d13f5',
+        'https://www.reuters.com/business/world-at-work/starbucks-union-rejects-companys-recent-offer-least-2-annual-pay-raise-2025-04-25/',
+      ],
+    },
 
-  // Create Sources
-  const sources = [
-    // Patagonia sources
-    { company: 'Patagonia', tag: 'environmentally_friendly', url: 'https://patagonia.com/our-footprint', title: 'Patagonia Environmental Impact Report', publisher: 'Patagonia', publishedAt: new Date('2024-01-15'), reliability: 0.9 },
-    { company: 'Patagonia', tag: 'ethical_sourcing', url: 'https://patagonia.com/fair-trade', title: 'Fair Trade Certified Products', publisher: 'Patagonia', publishedAt: new Date('2024-02-01'), reliability: 0.85 },
-    
-    // Nike sources
-    { company: 'Nike', tag: 'child_labour', url: 'https://purpose.nike.com/supply-chain', title: 'Nike Supply Chain Transparency', publisher: 'Nike', publishedAt: new Date('2024-01-20'), reliability: 0.7 },
-    { company: 'Nike', tag: 'feminism_workplace', url: 'https://news.nike.com/women', title: 'Nike Women\'s Initiatives', publisher: 'Nike News', publishedAt: new Date('2024-02-10'), reliability: 0.8 },
-    
-    // Apple sources
-    { company: 'Apple', tag: 'data_privacy', url: 'https://apple.com/privacy', title: 'Apple Privacy Policy', publisher: 'Apple', publishedAt: new Date('2024-01-25'), reliability: 0.9 },
-    { company: 'Apple', tag: 'child_labour', url: 'https://apple.com/supplier-responsibility', title: 'Supplier Responsibility Report', publisher: 'Apple', publishedAt: new Date('2024-02-05'), reliability: 0.75 },
-    
-    // Meta sources
-    { company: 'Meta', tag: 'data_privacy', url: 'https://about.fb.com/news/2024/privacy-update', title: 'Meta Privacy Updates', publisher: 'Meta Newsroom', publishedAt: new Date('2024-01-30'), reliability: 0.6 },
-    
-    // Whole Foods sources
-    { company: 'Whole Foods', tag: 'environmentally_friendly', url: 'https://wholefoodsmarket.com/sustainability', title: 'Sustainability Commitment', publisher: 'Whole Foods Market', publishedAt: new Date('2024-02-15'), reliability: 0.8 },
-    
-    // Walmart sources
-    { company: 'Walmart', tag: 'feminism_workplace', url: 'https://corporate.walmart.com/diversity', title: 'Diversity and Inclusion Report', publisher: 'Walmart Corporate', publishedAt: new Date('2024-01-10'), reliability: 0.5 },
-    
-    // Starbucks sources
-    { company: 'Starbucks', tag: 'lgbtq', url: 'https://stories.starbucks.com/lgbtq', title: 'LGBTQ+ Support and Inclusion', publisher: 'Starbucks Stories', publishedAt: new Date('2024-02-20'), reliability: 0.9 },
-    
-    // Chick-fil-A sources
-    { company: 'Chick-fil-A', tag: 'lgbtq', url: 'https://chick-fil-a.com/values', title: 'Company Values and Mission', publisher: 'Chick-fil-A', publishedAt: new Date('2024-01-05'), reliability: 0.8 },
-    
-    // Ben & Jerry's sources
-    { company: 'Ben & Jerry\'s', tag: 'lgbtq', url: 'https://benjerry.com/values/issues-we-care-about/lgbtq-equality', title: 'LGBTQ+ Equality Advocacy', publisher: 'Ben & Jerry\'s', publishedAt: new Date('2024-02-25'), reliability: 0.95 },
-    
-    // Tesla sources
-    { company: 'Tesla', tag: 'environmentally_friendly', url: 'https://tesla.com/impact', title: 'Tesla Impact Report', publisher: 'Tesla', publishedAt: new Date('2024-01-12'), reliability: 0.85 },
-    
-    // H&M sources
-    { company: 'H&M', tag: 'environmentally_friendly', url: 'https://hmgroup.com/sustainability', title: 'H&M Sustainability Strategy', publisher: 'H&M Group', publishedAt: new Date('2024-02-08'), reliability: 0.7 }
+    // Chick-fil-A — LGBTQ stance (opposes)
+    {
+      company: 'Chick-fil-A',
+      tagKey: 'lgbtq',
+      stance: Stance.opposes,
+      confidence: 0.9,
+      notes: 'Historical positions/donations referenced in reporting.',
+      sourceUrls: [
+        'https://www.businessinsider.com/chick-fil-a-lgbt-twitter-jack-dorsey-apology-marriage-equality-2018-6',
+        'https://en.wikipedia.org/wiki/Chick-fil-A_and_LGBTQ_people',
+      ],
+    },
+
+    // SHEIN — supply chain concerns (child_labour alleged_violation, ethical_sourcing alleged_violation)
+    {
+      company: 'SHEIN',
+      tagKey: 'child_labour',
+      stance: Stance.alleged_violation,
+      confidence: 0.85,
+      notes: 'Reports of labour violations in supply chain.',
+      sourceUrls: [
+        'https://www.antislavery.org/latest/shein-fast-fashion-problem',
+        'https://www.theguardian.com/business/2025/feb/26/shein-found-two-cases-of-child-labour-at-suppliers-in-2024-firm-tells-uk-mps',
+      ],
+    },
+    {
+      company: 'SHEIN',
+      tagKey: 'ethical_sourcing',
+      stance: Stance.alleged_violation,
+      confidence: 0.8,
+      notes: 'Sourcing and oversight concerns.',
+      sourceUrls: [
+        'https://www.antislavery.org/latest/shein-fast-fashion-problem',
+      ],
+    },
+
+    // Nestlé Bottled Water — water extraction & access concerns (environmentally_friendly opposes, ethical_sourcing alleged_violation)
+    {
+      company: 'Nestlé Bottled Water',
+      tagKey: 'environmentally_friendly',
+      stance: Stance.opposes,
+      confidence: 0.8,
+      notes: 'Water taking and environmental impact debates.',
+      sourceUrls: [
+        'https://www.theguardian.com/global/2018/oct/04/ontario-six-nations-nestle-running-water',
+      ],
+    },
+    {
+      company: 'Nestlé Bottled Water',
+      tagKey: 'ethical_sourcing',
+      stance: Stance.alleged_violation,
+      confidence: 0.7,
+      notes: 'Local access & extraction context raised by advocacy groups.',
+      sourceUrls: [
+        'https://canadians.org/analysis/what-we-know-about-nestle-departure/',
+      ],
+    },
+
+    // Nike — wages & supply chain (ethical_sourcing/child_labour alleged_violation)
+    {
+      company: 'Nike',
+      tagKey: 'ethical_sourcing',
+      stance: Stance.alleged_violation,
+      confidence: 0.8,
+      notes: 'Wage/rights issues in supplier factories.',
+      sourceUrls: [
+        'https://www.propublica.org/article/nike-wages-clothing-factory-cambodia',
+        'https://cleanclothes.org/news/2023/nike-board-executives-under-fire',
+      ],
+    },
+
+    // Amazon — labour/union issues (feminism_workplace alleged_violation)
+    {
+      company: 'Amazon',
+      tagKey: 'feminism_workplace',
+      stance: Stance.alleged_violation,
+      confidence: 0.7,
+      notes: 'Labour relations context in Canada.',
+      sourceUrls: [
+        'https://www.reuters.com/technology/amazon-exits-quebec-operations-cut-about-1700-jobs-2025-01-22',
+        'https://apnews.com/article/amazon-warehouses-quebec-union-jobs-66da72506ca52a9e6e99bcd634bba781',
+      ],
+    },
+
+    // McDonald’s — child labour findings & workplace safety (alleged_violation)
+    {
+      company: 'McDonald’s',
+      tagKey: 'child_labour',
+      stance: Stance.alleged_violation,
+      confidence: 0.8,
+      notes: 'US DOL franchisee enforcement examples.',
+      sourceUrls: [
+        'https://www.dol.gov/newsroom/releases/whd/whd20231127',
+      ],
+    },
+    {
+      company: 'McDonald’s',
+      tagKey: 'feminism_workplace',
+      stance: Stance.alleged_violation,
+      confidence: 0.65,
+      notes: 'Workplace safety/harassment reporting.',
+      sourceUrls: [
+        'https://apnews.com/article/mcdonalds-sexual-assault-pittsburgh-5a7761ce76acf8bafe531b4a9224b720',
+      ],
+    },
+
+    // Loblaws — price fixing (ethical_sourcing alleged_violation)
+    {
+      company: 'Loblaws',
+      tagKey: 'ethical_sourcing',
+      stance: Stance.alleged_violation,
+      confidence: 0.85,
+      notes: 'Bread price-fixing settlement / industry fines.',
+      sourceUrls: [
+        'https://globalnews.ca/news/11408873/bread-price-fixing-lawsuit-claims-open',
+        'https://www.canada.ca/en/competition-bureau/news/2023/06/canada-bread-sentenced-to-50-million-fine-after-pleading-guilty-to-fixing-wholesale-bread-prices.html',
+      ],
+    },
+
+    // H&M — Xinjiang & greenwashing scrutiny (ethical_sourcing, environmentally_friendly alleged_violation)
+    {
+      company: 'H&M',
+      tagKey: 'ethical_sourcing',
+      stance: Stance.alleged_violation,
+      confidence: 0.7,
+      notes: 'Sourcing stance and supply-chain sensitivity.',
+      sourceUrls: [
+        'https://www.reuters.com/world/americas/hms-xinjiang-labour-stance-raises-social-media-storm-china-2021-03-24/',
+      ],
+    },
+    {
+      company: 'H&M',
+      tagKey: 'environmentally_friendly',
+      stance: Stance.alleged_violation,
+      confidence: 0.65,
+      notes: 'Marketing/claims scrutiny around sustainability.',
+      sourceUrls: [
+        'https://www.theguardian.com/business/2022/jan/14/dirty-greenwashing-watchdog-targets-fashion-brands-over-misleading-claims',
+      ],
+    },
   ]
 
-  for (const source of sources) {
-    const company = companies.find(c => c.name === source.company)
-    const tag = tags.find(t => t.key === source.tag)
-    
-    if (company && tag) {
+  let createdFacts = 0
+  let createdSources = 0
+
+  for (const f of factInputs) {
+    const company = companyByName.get(f.company)
+    const tag = tagByKey.get(f.tagKey)
+    if (!company || !tag) {
+      console.warn(`⚠️ Skipping fact: company or tag not found`, f.company, f.tagKey)
+      continue
+    }
+
+    // Create the fact
+    const fact = await prisma.companyTagFact.create({
+      data: {
+        companyId: company.id,
+        tagId: tag.id,
+        stance: f.stance,
+        confidence: f.confidence,
+        notes: f.notes ?? null,
+        sourceUrls: f.sourceUrls,
+        lastVerifiedAt: new Date(),
+      },
+    })
+    createdFacts++
+
+    // Also store each URL as a Source row
+    for (const url of f.sourceUrls) {
       await prisma.source.create({
         data: {
           companyId: company.id,
           tagId: tag.id,
-          url: source.url,
-          title: source.title,
-          publisher: source.publisher,
-          publishedAt: source.publishedAt,
-          reliability: source.reliability,
-          claimExcerpt: `Evidence supporting ${source.company}'s stance on ${tag.tag_name}`
-        }
+          url,
+          title: null,
+          publisher: null,
+          publishedAt: null,
+          reliability: null,
+          claimExcerpt: `Reference link for ${company.name} on ${tag.tag_name}`,
+        },
       })
+      createdSources++
     }
   }
 
-  console.log(`✅ Created ${sources.length} sources`)
-
-  console.log('🎉 Database seed completed successfully!')
+  console.log(`✅ CompanyTagFacts created: ${createdFacts}`)
+  console.log(`✅ Sources created (from proof links): ${createdSources}`)
+  console.log('🎉 Seed complete')
 }
 
 main()
