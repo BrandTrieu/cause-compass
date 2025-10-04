@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/Card";
+import InfiniteScrollCards from "./InfiniteScrollCards";
 import {
   FaLeaf,
   FaRainbow,
@@ -81,51 +82,27 @@ const causes: Cause[] = [
 
 export default function InfiniteCauseCards() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="flex animate-scroll" style={{ '--animation-duration': '50s' } as React.CSSProperties}>
-        {/* First set of cards */}
-        {causes.map((cause) => {
-          const Icon = cause.icon;
-          return (
-            <div key={cause.key} className="flex-shrink-0 px-4">
-              <Card className="w-80 h-48 hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-8 h-full flex flex-col items-center justify-center text-center">
-                  <div className={`mb-4 ${cause.color}`}>
-                    <Icon className="w-12 h-12" />
-                  </div>
-                  <h3 className="font-bold text-xl mb-2 text-foreground">
-                    {cause.name}
-                  </h3>
-                  <p className="text-text-muted text-sm leading-relaxed">
-                    {cause.description}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          );
-        })}
-        {/* Exact duplicate for seamless loop */}
-        {causes.map((cause) => {
-          const Icon = cause.icon;
-          return (
-            <div key={`dup-${cause.key}`} className="flex-shrink-0 px-4" aria-hidden="true">
-              <Card className="w-80 h-48 hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-8 h-full flex flex-col items-center justify-center text-center">
-                  <div className={`mb-4 ${cause.color}`}>
-                    <Icon className="w-12 h-12" />
-                  </div>
-                  <h3 className="font-bold text-xl mb-2 text-foreground">
-                    {cause.name}
-                  </h3>
-                  <p className="text-text-muted text-sm leading-relaxed">
-                    {cause.description}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <InfiniteScrollCards direction="left" speed={20}>
+      {causes.map((cause) => {
+        const Icon = cause.icon;
+        return (
+          <div key={cause.key} className="flex-shrink-0 px-4">
+            <Card className="w-80 h-48 hover:shadow-lg transition-shadow duration-300">
+              <CardContent className="p-8 h-full flex flex-col items-center justify-center text-center">
+                <div className={`mb-4 ${cause.color}`}>
+                  <Icon className="w-12 h-12" />
+                </div>
+                <h3 className="font-bold text-xl mb-2 text-foreground">
+                  {cause.name}
+                </h3>
+                <p className="text-text-muted text-sm leading-relaxed">
+                  {cause.description}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        );
+      })}
+    </InfiniteScrollCards>
   );
 }
