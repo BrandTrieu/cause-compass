@@ -34,7 +34,7 @@ async function getSearchResults(query: string, mode: 'user' | 'guest'): Promise<
     mode
   })
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/companies/search?${params}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/companies/search-basic?${params}`, {
     cache: 'no-store'
   })
 
@@ -63,8 +63,16 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
       )
     }
 
+    // Separate main results from related companies
+    const mainResults = results.filter(company => 
+      company.name.toLowerCase().includes(query.toLowerCase())
+    )
+    const relatedResults = results.filter(company => 
+      !company.name.toLowerCase().includes(query.toLowerCase())
+    )
+
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-foreground">
             {query ? `Results for "${query}"` : 'All Companies'}
@@ -74,20 +82,50 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          {results.map((company) => (
-            <CompanyCard
-              key={company.id}
-              id={company.id}
-              name={company.name}
-              category={company.category}
-              summary={company.summary}
-              score={company.score}
-              topTags={company.topTags}
-              topSources={company.topSources}
-            />
-          ))}
-        </div>
+        {/* Main Search Results */}
+        {mainResults.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground">Direct Matches</h3>
+            <div className="grid grid-cols-1 gap-6">
+              {mainResults.map((company) => (
+                <CompanyCard
+                  key={company.id}
+                  id={company.id}
+                  name={company.name}
+                  category={company.category}
+                  summary={company.summary}
+                  score={company.score}
+                  topTags={company.topTags}
+                  topSources={company.topSources}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Related Companies */}
+        {relatedResults.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground">Related Companies</h3>
+            <p className="text-sm text-text-muted">
+              Other companies in the same category that might interest you
+            </p>
+            <div className="grid grid-cols-1 gap-6">
+              {relatedResults.map((company) => (
+                <CompanyCard
+                  key={company.id}
+                  id={company.id}
+                  name={company.name}
+                  category={company.category}
+                  summary={company.summary}
+                  score={company.score}
+                  topTags={company.topTags}
+                  topSources={company.topSources}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     )
   } catch {

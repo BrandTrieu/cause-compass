@@ -75,20 +75,24 @@ export async function GET(request: NextRequest) {
 
     // Calculate scores and format results
     const results = companies.map(company => {
-      const facts: Fact[] = company.facts.map(fact => ({
-        tagKey: fact.tag.key,
-        stance: fact.stance,
-        confidence: fact.confidence
-      }))
+      // Safely map facts, filtering out any with missing tags
+      const facts: Fact[] = company.facts
+        .filter(fact => fact.tag) // Only include facts with valid tags
+        .map(fact => ({
+          tagKey: fact.tag!.key,
+          stance: fact.stance,
+          confidence: fact.confidence
+        }))
 
       const score = companyScore(prefs, facts)
 
       // Get top tags for this company
       const topTags = company.facts
+        .filter(fact => fact.tag) // Only include facts with valid tags
         .sort((a, b) => b.confidence - a.confidence)
         .slice(0, 2)
         .map(fact => ({
-          tagKey: fact.tag.key,
+          tagKey: fact.tag!.key,
           stance: fact.stance,
           confidence: fact.confidence
         }))
