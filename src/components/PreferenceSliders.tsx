@@ -13,12 +13,12 @@ interface PreferenceSlidersProps {
 
 const tagLabels: Record<string, string> = {
   free_palestine: 'Free Palestine',
-  justice_for_ukraine: 'Russia Ukraine',
-  women_workplace: 'Feminism/Workplace',
-  child_labour: 'Child Labour',
-  lgbtq: 'LGBTQ+',
-  animal_cruelty: 'Animal Cruelty',
-  environmentally_friendly: 'Environment',
+  justice_for_ukraine: 'Justice for Ukraine',
+  women_workplace: 'Women in the Workplace',
+  child_labour: 'Against Child Labour',
+  lgbtq: 'LGBTQ Rights',
+  animal_cruelty: 'Against Animal Cruelty',
+  environmentally_friendly: 'Environmentally Friendly',
   ethical_sourcing: 'Ethical Sourcing',
   data_privacy: 'Data Privacy'
 }
@@ -63,10 +63,10 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
   }
 
   const getSliderColor = (value: number) => {
-    if (value <= 0.2) return '#6C757D'
-    if (value <= 0.5) return '#A2B29F'
-    if (value <= 0.8) return '#BDD2B6'
-    return '#E63946'
+    if (value <= 0.2) return '#9CA3AF' // Grey for low importance
+    if (value <= 0.5) return '#FDE047' // Yellow for medium importance
+    if (value <= 0.8) return '#FB923C' // Orange for high importance
+    return '#EF4444' // Red for very high importance
   }
 
   return (
