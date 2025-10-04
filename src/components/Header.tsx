@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import { FaCompass } from "react-icons/fa";
 
 export function Header() {
   const [user, setUser] = useState<any>(null)
@@ -49,8 +50,9 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-black text-white hover:text-secondary transition-colors">
-              CauseCompass
+            <Link href="/" className="flex items-center space-x-2 text-xl font-black text-white hover:text-secondary transition-colors">
+              <FaCompass className="w-8 h-8" />
+              <span>CauseCompass</span>
             </Link>
           </div>
           

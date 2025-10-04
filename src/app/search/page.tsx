@@ -72,7 +72,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
     )
 
     return (
-      <div className="space-y-8">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-foreground">
             {query ? `Results for "${query}"` : 'All Companies'}
@@ -86,7 +86,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
         {mainResults.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground">Direct Matches</h3>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 gap-0">
               {mainResults.map((company) => (
                 <CompanyCard
                   key={company.id}
@@ -106,7 +106,7 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
         {/* Related Companies */}
         {relatedResults.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">Related Companies</h3>
+            <div className="text-lg font-semibold text-foreground">Related Companies</div>
             <p className="text-sm text-text-muted">
               Other companies in the same category that might interest you
             </p>
