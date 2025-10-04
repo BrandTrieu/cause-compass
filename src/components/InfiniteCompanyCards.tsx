@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/Card";
+import InfiniteScrollCards from "./InfiniteScrollCards";
 import { useState } from "react";
 import Image from "next/image";
 import {
@@ -66,22 +67,11 @@ const companies: Company[] = [
 
 export default function InfiniteCompanyCards() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="flex animate-scroll-reverse" style={{ '--animation-duration': '50s' } as React.CSSProperties}>
-        {/* First set of cards */}
-        {companies.map((company) => (
-          <CompanyCard key={company.name} company={company} />
-        ))}
-        {/* Exact duplicate for seamless loop */}
-        {companies.map((company) => (
-          <CompanyCard
-            key={`dup-${company.name}`}
-            company={company}
-            ariaHidden
-          />
-        ))}
-      </div>
-    </div>
+    <InfiniteScrollCards direction="right" speed={20}>
+      {companies.map((company) => (
+        <CompanyCard key={company.name} company={company} />
+      ))}
+    </InfiniteScrollCards>
   );
 }
 
