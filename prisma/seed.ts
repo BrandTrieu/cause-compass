@@ -21,6 +21,14 @@ type FactInput = {
   sources: PositiveSource[];
 };
 
+// Normalize display names so "McDonald’s" === "McDonald's" (don’t change any data)
+const normalize = (s: string) =>
+  s
+    .normalize("NFKC")
+    .replace(/[\u2018\u2019\u2032\u00B4]/g, "'") // smart quotes → ASCII '
+    .replace(/\s+/g, " ")
+    .trim();
+
 async function main() {
   console.log("🌱 Starting database seed...");
 
@@ -346,7 +354,8 @@ async function main() {
   const companies = await Promise.all(
     companyDefs.map((c) => prisma.company.create({ data: c }))
   );
-  const companyByName = new Map(companies.map((c) => [c.name, c]));
+  // Build map with normalized keys (no data changes)
+  const companyByName = new Map(companies.map((c) => [normalize(c.name), c]));
   console.log(`✅ Companies created: ${companies.length}`);
 
   // 3) Controversial facts (negative / alleged_violation), using your links
@@ -1335,7 +1344,7 @@ async function main() {
 
   // Helper to write facts + sources
   async function writeFactAndSources(f: FactInput) {
-    const company = companyByName.get(f.company);
+    const company = companyByName.get(normalize(f.company)); // normalize lookups
     const tag = tagByKey.get(f.tagKey);
     if (!company || !tag) {
       console.warn(
