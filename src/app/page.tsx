@@ -66,16 +66,16 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Popular Companies */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">Popular Companies</h2>
-        <InfiniteCompanyCards />
-      </div>
-
       {/* Featured Causes */}
       <div className="mb-16">
         <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">Causes We Track</h2>
         <InfiniteCauseCards />
+      </div>
+
+      {/* Popular Companies */}
+      <div className="mb-16">
+        <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">Popular Companies</h2>
+        <InfiniteCompanyCards />
       </div>
 
       {/* How It Works */}
