@@ -1,5 +1,4 @@
 import { Source } from '@prisma/client'
-import { format } from 'date-fns'
 
 interface SourceListProps {
   sources: Source[]
@@ -23,7 +22,7 @@ export function SourceList({ sources, className }: SourceListProps) {
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-800 underline"
             >
-              {source.title || new URL(source.url).hostname}
+              {source.title || (typeof window !== 'undefined' ? new URL(source.url).hostname : source.url)}
             </a>
             {source.publisher && (
               <span className="text-gray-500 ml-2">
@@ -32,7 +31,10 @@ export function SourceList({ sources, className }: SourceListProps) {
             )}
             {source.publishedAt && (
               <span className="text-gray-400 ml-2">
-                ({format(new Date(source.publishedAt), 'MMM yyyy')})
+                ({new Date(source.publishedAt).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  year: 'numeric' 
+                })})
               </span>
             )}
             {source.reliability && (
