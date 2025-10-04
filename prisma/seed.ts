@@ -34,11 +34,11 @@ async function main() {
   // 1) Seed Tags
   const tagDefs = [
     { key: 'free_palestine',           tag_name: 'Free Palestine',               description: 'Support for Palestinian rights and opposition to Israeli occupation' },
-    { key: 'russia_ukraine',           tag_name: 'Russia Ukraine',               description: 'Position on Russia-Ukraine conflict and support for Ukraine' },
-    { key: 'feminism_workplace',       tag_name: 'Feminism/Women in the workplace', description: 'Gender equality, women\'s rights, and workplace diversity' },
-    { key: 'child_labour',             tag_name: 'Child Labour',                 description: 'Opposition to child labor and support for children\'s rights' },
-    { key: 'lgbtq',                    tag_name: 'LGBTQ',                        description: 'Support for LGBTQ+ rights and equality' },
-    { key: 'animal_cruelty',           tag_name: 'Animal Cruelty',               description: 'Opposition to animal cruelty and support for animal welfare' },
+    { key: 'justice_for_ukraine',           tag_name: 'Justice for Ukraine',               description: 'Support for Ukraine\'s sovereignty and territorial integrity' },
+    { key: 'women_workplace',       tag_name: 'Women in the workplace', description: 'Gender equality, women\'s rights, and workplace diversity' },
+    { key: 'child_labour',             tag_name: 'Against Child Labour',                 description: 'Opposition to child labor and support for children\'s rights' },
+    { key: 'lgbtq',                    tag_name: 'LGBTQ Rights',                        description: 'Support for LGBTQ+ rights and equality' },
+    { key: 'animal_cruelty',           tag_name: 'Against Animal Cruelty',               description: 'Opposition to animal cruelty and support for animal welfare' },
     { key: 'environmentally_friendly', tag_name: 'Environmentally Friendly',     description: 'Environmental sustainability and climate action' },
     { key: 'ethical_sourcing',         tag_name: 'Ethical Sourcing',             description: 'Ethical supply chain and fair trade practices' },
     { key: 'data_privacy',             tag_name: 'Data Privacy',                 description: 'Protection of user data and privacy rights' },
@@ -207,7 +207,7 @@ async function main() {
     // Starbucks
     {
       company: 'Starbucks',
-      tagKey: 'feminism_workplace',
+      tagKey: 'women_workplace',
       stance: Stance.alleged_violation,
       confidence: 0.75,
       notes: 'Union/labour-related disputes reported.',
@@ -353,7 +353,7 @@ async function main() {
     // Amazon
     {
       company: 'Amazon',
-      tagKey: 'feminism_workplace',
+      tagKey: 'women_workplace',
       stance: Stance.alleged_violation,
       confidence: 0.7,
       sources: [
@@ -392,7 +392,7 @@ async function main() {
     },
     {
       company: 'McDonald’s',
-      tagKey: 'feminism_workplace',
+      tagKey: 'women_workplace',
       stance: Stance.alleged_violation,
       confidence: 0.65,
       sources: [
