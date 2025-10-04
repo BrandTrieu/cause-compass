@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { createSupabaseServerClient, createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     
     if (mode === 'user') {
       try {
-        const supabase = await createSupabaseServerClient()
+        const supabase = await createSupabaseServerClientFromRequest(request)
         const { data: { user } } = await supabase.auth.getUser()
         
         if (user?.email) {

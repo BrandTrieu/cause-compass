@@ -58,7 +58,10 @@ async function getCompanyDetails(id: string, mode: 'user' | 'guest'): Promise<Co
   const params = new URLSearchParams({ mode })
   
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/companies/${id}?${params}`, {
-    cache: 'no-store'
+    cache: 'no-store',
+    headers: {
+      'Cookie': (await import('next/headers')).cookies().toString()
+    }
   })
 
   if (!response.ok) {
@@ -83,17 +86,18 @@ const tagMap: Record<string, string> = {
   data_privacy: 'Data Privacy'
 }
 
+
 // Generate company logo URL or use placeholder
 const getCompanyLogo = (companyName: string, logoUrl?: string) => {
   if (logoUrl) return logoUrl
   
-  // Generate logo using a service like Clearbit or use initials
-  const initials = companyName
-    .split(' ')
-    .map(word => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
+    // Generate logo using a service like Clearbit or use initials
+    // const initials = companyName
+    //   .split(' ')
+    //   .map(word => word[0])
+    //   .join('')
+    //   .toUpperCase()
+    //   .slice(0, 2)
   
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(companyName)}&background=random&color=fff&size=80&bold=true&format=png`
 }
@@ -104,7 +108,7 @@ const isSvgLogo = (url?: string) => {
   return url.includes('.svg') || url.includes('simpleicons.org') || url.includes('worldvectorlogo.com')
 }
 
-async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest' }) {
+async function CompanyDetails({ id, mode, scoreFromUrl }: { id: string; mode: 'user' | 'guest'; scoreFromUrl: number | null }) {
   try {
     const company = await getCompanyDetails(id, mode)
 
@@ -151,7 +155,12 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
               </div>
             </div>
             <div className="w-64">
-              <ScoreBar score={company.score} />
+              <ScoreBar score={scoreFromUrl ?? company.score} />
+              <div className="mt-2 text-center">
+                <span className="text-sm font-medium text-text-muted">
+                  Score: {(scoreFromUrl ?? company.score).toFixed(3)}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -294,11 +303,12 @@ export default async function CompanyPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ mode?: string }>
+  searchParams: Promise<{ mode?: string; score?: string }>
 }) {
   const resolvedParams = await params
   const resolvedSearchParams = await searchParams
   const mode = (resolvedSearchParams.mode as 'user' | 'guest') || 'guest'
+  const scoreFromUrl = resolvedSearchParams.score ? parseFloat(resolvedSearchParams.score) : null
   
   // If no mode parameter, show the client component to detect auth
   if (!resolvedSearchParams.mode) {
@@ -308,7 +318,7 @@ export default async function CompanyPage({
   // If mode is provided, show the server component directly
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <CompanyDetails id={resolvedParams.id} mode={mode} />
+      <CompanyDetails id={resolvedParams.id} mode={mode} scoreFromUrl={scoreFromUrl} />
     </Suspense>
   )
 }

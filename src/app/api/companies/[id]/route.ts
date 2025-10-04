@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { createSupabaseServerClient, createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
 
 export async function GET(
   request: NextRequest,
@@ -16,7 +16,7 @@ export async function GET(
     let prefs: Prefs = defaultGuestPrefs
     if (mode === 'user') {
       try {
-        const supabase = await createSupabaseServerClient()
+        const supabase = await createSupabaseServerClientFromRequest(request)
         const { data: { user } } = await supabase.auth.getUser()
         
         if (user?.email) {
@@ -66,10 +66,6 @@ export async function GET(
     }))
 
     const score = companyScore(prefs, facts)
-    
-    console.log(`Company ${company.name} - Mode: ${mode}, Score: ${score}`)
-    console.log('User preferences:', prefs)
-    console.log('Company facts:', facts)
 
     // Format facts breakdown
     const breakdown = company.facts.map(fact => ({

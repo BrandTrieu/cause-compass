@@ -72,7 +72,7 @@ export function CompanyCard({
 
   if (variant === 'mini') {
     return (
-      <Link href={`/company/${id}`}>
+      <Link href={`/company/${id}?score=${score}`}>
         <Card className="hover:shadow-md transition-shadow cursor-pointer">
           <CardContent className="p-4">
             <div className="flex items-start gap-3 mb-3">
@@ -113,7 +113,7 @@ export function CompanyCard({
   }
 
   return (
-    <Link href={`/company/${id}`}>
+    <Link href={`/company/${id}?score=${score}`}>
       <Card className="hover:shadow-lg transition-shadow cursor-pointer">
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
