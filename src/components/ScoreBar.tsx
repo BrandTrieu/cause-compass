@@ -11,9 +11,9 @@ export function ScoreBar({ score, className }: ScoreBarProps) {
   
   // Determine color based on score
   const getColorClass = (score: number) => {
-    if (score >= 0.3) return 'from-green-500 to-green-600'
-    if (score >= -0.3) return 'from-gray-400 to-gray-500'
-    return 'from-red-500 to-red-600'
+    if (score >= 0.3) return 'from-accent-1 to-accent-1/80'
+    if (score >= -0.3) return 'from-text-muted to-text-muted/80'
+    return 'from-accent-2 to-accent-2/80'
   }
 
   // Determine label based on score
@@ -25,12 +25,12 @@ export function ScoreBar({ score, className }: ScoreBarProps) {
 
   return (
     <div className={clsx('w-full', className)}>
-      <div className="flex justify-between text-xs text-gray-600 mb-1">
+      <div className="flex justify-between text-xs text-text-muted mb-1">
         <span>Conflicts</span>
         <span>Mixed</span>
         <span>Aligned</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-border rounded-full h-2">
         <div
           className={clsx(
             'h-2 rounded-full bg-gradient-to-r transition-all duration-300',
@@ -40,7 +40,7 @@ export function ScoreBar({ score, className }: ScoreBarProps) {
         />
       </div>
       <div className="flex justify-center mt-1">
-        <span className="text-sm font-medium text-gray-700">
+        <span className="text-sm font-medium text-foreground">
           {getLabel(score)} ({Math.round(score * 100)}%)
         </span>
       </div>

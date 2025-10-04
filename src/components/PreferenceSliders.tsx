@@ -63,10 +63,10 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
   }
 
   const getSliderColor = (value: number) => {
-    if (value <= 0.2) return 'bg-gray-300'
-    if (value <= 0.5) return 'bg-yellow-400'
-    if (value <= 0.8) return 'bg-orange-400'
-    return 'bg-red-500'
+    if (value <= 0.2) return '#6C757D'
+    if (value <= 0.5) return '#A2B29F'
+    if (value <= 0.8) return '#BDD2B6'
+    return '#E63946'
   }
 
   return (
@@ -74,7 +74,7 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
       <Card>
         <CardHeader>
           <CardTitle>Set Your Values</CardTitle>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-text-muted">
             Adjust the importance of each cause to personalize your company recommendations.
           </p>
         </CardHeader>
@@ -83,10 +83,10 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
             <div key={tagKey} className="space-y-2">
               <div className="flex justify-between items-center">
                 <div>
-                  <label className="font-medium text-sm">{label}</label>
-                  <p className="text-xs text-gray-500">{tagDescriptions[tagKey]}</p>
+                  <label className="font-medium text-sm text-foreground">{label}</label>
+                  <p className="text-xs text-text-muted">{tagDescriptions[tagKey]}</p>
                 </div>
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-foreground">
                   {getSliderLabel(prefs[tagKey] || 0)}
                 </span>
               </div>
@@ -98,12 +98,12 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
                   step="0.1"
                   value={prefs[tagKey] || 0}
                   onChange={(e) => handleSliderChange(tagKey, parseFloat(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                  className="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer slider"
                   style={{
-                    background: `linear-gradient(to right, ${getSliderColor(prefs[tagKey] || 0)} 0%, ${getSliderColor(prefs[tagKey] || 0)} ${(prefs[tagKey] || 0) * 100}%, #e5e7eb ${(prefs[tagKey] || 0) * 100}%, #e5e7eb 100%)`
+                    background: `linear-gradient(to right, ${getSliderColor(prefs[tagKey] || 0)} 0%, ${getSliderColor(prefs[tagKey] || 0)} ${(prefs[tagKey] || 0) * 100}%, #E9ECEF ${(prefs[tagKey] || 0) * 100}%, #E9ECEF 100%)`
                   }}
                 />
-                <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <div className="flex justify-between text-xs text-text-muted mt-1">
                   <span>Not Important</span>
                   <span>Very Important</span>
                 </div>

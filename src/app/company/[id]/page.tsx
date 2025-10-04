@@ -82,14 +82,14 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
-            <Link href="/search" className="text-blue-600 hover:text-blue-800">
+            <Link href="/search" className="text-primary hover:text-accent-1">
               ← Back to Search
             </Link>
           </div>
           
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">{company.name}</h1>
+              <h1 className="text-4xl font-bold text-foreground mb-2">{company.name}</h1>
               <div className="flex items-center gap-4 mb-4">
                 <Badge variant="outline">{company.category.toLowerCase()}</Badge>
                 {company.website && (
@@ -97,7 +97,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
                     href={company.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800"
+                    className="text-primary hover:text-accent-1"
                   >
                     Visit Website →
                   </a>
@@ -110,7 +110,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
           </div>
 
           {company.summary && (
-            <p className="text-lg text-gray-600 mt-4">{company.summary}</p>
+            <p className="text-lg text-text-muted mt-4">{company.summary}</p>
           )}
         </div>
 
@@ -191,8 +191,8 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card>
           <CardContent className="p-8 text-center">
-            <h2 className="text-2xl font-semibold mb-4 text-red-600">Error loading company</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl font-semibold mb-4 text-accent-2">Error loading company</h2>
+            <p className="text-text-muted mb-6">
               Something went wrong while loading the company details. Please try again.
             </p>
             <div className="flex gap-4 justify-center">
@@ -214,20 +214,20 @@ function LoadingSkeleton() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-8">
-        <div className="h-12 bg-gray-200 rounded w-1/4 animate-pulse"></div>
-        <div className="h-8 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+        <div className="h-12 bg-border rounded w-1/4 animate-pulse"></div>
+        <div className="h-8 bg-border rounded w-1/2 animate-pulse"></div>
+        <div className="h-4 bg-border rounded w-3/4 animate-pulse"></div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="h-6 bg-gray-200 rounded w-1/3 animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+            <div className="h-6 bg-border rounded w-1/3 animate-pulse"></div>
+            <div className="h-4 bg-border rounded w-full animate-pulse"></div>
+            <div className="h-4 bg-border rounded w-2/3 animate-pulse"></div>
           </div>
           <div className="space-y-4">
-            <div className="h-6 bg-gray-200 rounded w-1/3 animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+            <div className="h-6 bg-border rounded w-1/3 animate-pulse"></div>
+            <div className="h-4 bg-border rounded w-full animate-pulse"></div>
+            <div className="h-4 bg-border rounded w-2/3 animate-pulse"></div>
           </div>
         </div>
       </div>

@@ -78,8 +78,8 @@ export default function PreferencesPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
-          <div className="h-96 bg-gray-200 rounded"></div>
+          <div className="h-8 bg-border rounded w-1/3 mb-8"></div>
+          <div className="h-96 bg-border rounded"></div>
         </div>
       </div>
     )
@@ -94,8 +94,8 @@ export default function PreferencesPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Your Preferences</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-foreground">Your Preferences</h1>
+            <p className="text-text-muted mt-2">
               Customize how companies are scored based on your values
             </p>
           </div>
@@ -106,9 +106,9 @@ export default function PreferencesPage() {
       </div>
 
       {error && (
-        <Card className="mb-6 border-red-200 bg-red-50">
+        <Card className="mb-6 border-accent-2 bg-red-50">
           <CardContent className="p-4">
-            <p className="text-red-600">{error}</p>
+            <p className="text-accent-2">{error}</p>
           </CardContent>
         </Card>
       )}

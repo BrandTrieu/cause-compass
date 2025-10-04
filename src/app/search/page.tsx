@@ -47,8 +47,8 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
       return (
         <Card>
           <CardContent className="p-8 text-center">
-            <h3 className="text-lg font-semibold mb-2">No companies found</h3>
-            <p className="text-gray-600 mb-4">
+          <h3 className="text-lg font-semibold mb-2 text-foreground">No companies found</h3>
+          <p className="text-text-muted mb-4">
               Try searching for a different company name or browse our database.
             </p>
             <Button onClick={() => window.location.href = '/'}>
@@ -62,10 +62,10 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-2xl font-semibold text-foreground">
             {query ? `Results for "${query}"` : 'All Companies'}
           </h2>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-text-muted">
             {mode === 'user' ? 'Personalized to your values' : 'Based on overall ethicality'}
           </div>
         </div>
@@ -90,8 +90,8 @@ async function SearchResults({ query, mode }: { query: string; mode: 'user' | 'g
     return (
       <Card>
         <CardContent className="p-8 text-center">
-          <h3 className="text-lg font-semibold mb-2 text-red-600">Error loading results</h3>
-          <p className="text-gray-600 mb-4">
+          <h3 className="text-lg font-semibold mb-2 text-accent-2">Error loading results</h3>
+          <p className="text-text-muted mb-4">
             Something went wrong while searching. Please try again.
           </p>
           <Button onClick={() => window.location.reload()}>
@@ -107,20 +107,20 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="h-8 bg-gray-200 rounded w-64 animate-pulse"></div>
-        <div className="h-4 bg-gray-200 rounded w-48 animate-pulse"></div>
+        <div className="h-8 bg-border rounded w-64 animate-pulse"></div>
+        <div className="h-4 bg-border rounded w-48 animate-pulse"></div>
       </div>
       <div className="grid grid-cols-1 gap-6">
         {[...Array(3)].map((_, i) => (
           <Card key={i}>
             <CardContent className="p-6">
               <div className="space-y-4">
-                <div className="h-6 bg-gray-200 rounded w-1/3 animate-pulse"></div>
-                <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+                <div className="h-6 bg-border rounded w-1/3 animate-pulse"></div>
+                <div className="h-4 bg-border rounded w-full animate-pulse"></div>
+                <div className="h-4 bg-border rounded w-2/3 animate-pulse"></div>
                 <div className="flex gap-2">
-                  <div className="h-6 bg-gray-200 rounded w-20 animate-pulse"></div>
-                  <div className="h-6 bg-gray-200 rounded w-24 animate-pulse"></div>
+                  <div className="h-6 bg-border rounded w-20 animate-pulse"></div>
+                  <div className="h-6 bg-border rounded w-24 animate-pulse"></div>
                 </div>
               </div>
             </CardContent>

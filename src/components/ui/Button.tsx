@@ -13,10 +13,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
           {
-            'bg-blue-600 text-white hover:bg-blue-700': variant === 'primary',
-            'bg-gray-100 text-gray-900 hover:bg-gray-200': variant === 'secondary',
-            'border border-gray-300 bg-transparent hover:bg-gray-50': variant === 'outline',
-            'hover:bg-gray-100': variant === 'ghost',
+            'bg-primary text-white hover:bg-primary/90': variant === 'primary',
+            'bg-secondary text-white hover:bg-secondary/90': variant === 'secondary',
+            'border border-primary bg-transparent text-primary hover:bg-primary hover:text-white': variant === 'outline',
+            'hover:bg-background text-foreground': variant === 'ghost',
           },
           {
             'h-8 px-3 text-sm': size === 'sm',

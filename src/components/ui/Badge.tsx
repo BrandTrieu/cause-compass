@@ -13,12 +13,12 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
         className={clsx(
           'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
           {
-            'bg-gray-100 text-gray-800': variant === 'default',
-            'bg-gray-200 text-gray-900': variant === 'secondary',
-            'bg-green-100 text-green-800': variant === 'success',
-            'bg-yellow-100 text-yellow-800': variant === 'warning',
-            'bg-red-100 text-red-800': variant === 'destructive',
-            'border border-gray-300 bg-transparent text-gray-700': variant === 'outline',
+            'bg-background text-foreground': variant === 'default',
+            'bg-secondary text-white': variant === 'secondary',
+            'bg-accent-1 text-white': variant === 'success',
+            'bg-accent-1 text-white': variant === 'warning',
+            'bg-accent-2 text-white': variant === 'destructive',
+            'border border-primary bg-transparent text-primary': variant === 'outline',
           },
           className
         )}
