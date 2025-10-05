@@ -61,11 +61,17 @@ export function AI_Summary({ companyId, mode }: AI_SummaryProps) {
 
             {citations.length > 0 && (
               <div className="mt-3 text-sm">
-                <p className="font-semibold">Sources:</p>
-                <ul className="list-disc ml-4">
+                <p className="font-semibold mb-2">Sources:</p>
+                <ul className="space-y-1">
                   {citations.map((c, i) => (
-                    <li key={i}>
-                      <a href={c.url} target="_blank" rel="noreferrer" className="underline">
+                    <li key={i} className="flex items-start">
+                      <span className="text-gray-400 mr-2 mt-1">•</span>
+                      <a 
+                        href={c.url} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-blue-600 hover:text-blue-800 underline break-all"
+                      >
                         {c.title || c.url}
                       </a>
                     </li>
