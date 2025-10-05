@@ -1,5 +1,4 @@
 import { CompanyCard } from '@/components/CompanyCard'
-import { Stance } from '@prisma/client'
 
 interface Alternative {
   id: string

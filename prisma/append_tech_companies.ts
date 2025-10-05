@@ -73,7 +73,7 @@ async function main() {
     )
   );
 
-  const tags = await prisma.tag.findMany({ where: { key: { in: TAG_KEYS as any } } });
+  const tags = await prisma.tag.findMany({ where: { key: { in: TAG_KEYS } } });
   const tagByKey = new Map(tags.map((t) => [t.key, t]));
 
   // --- 1) Upsert companies (controversials + alternatives) ---

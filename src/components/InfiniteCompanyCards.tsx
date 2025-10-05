@@ -9,7 +9,6 @@ import {
   FaCoffee,
   FaCar,
   FaFacebook,
-  FaMountain,
   FaRunning,
   FaHamburger,
 } from "react-icons/fa";

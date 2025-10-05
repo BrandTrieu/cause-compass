@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/Card";
 import { useEffect, useRef } from "react";
 
 interface InfiniteScrollCardsProps {

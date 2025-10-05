@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
-import { createSupabaseServerClient, createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
+import { createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
 
 export async function GET(
   request: NextRequest,
