@@ -11,7 +11,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       <div
         ref={ref}
         className={clsx(
-          'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+          'inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium',
           {
             'bg-background text-foreground': variant === 'default',
             'bg-secondary text-white': variant === 'secondary',

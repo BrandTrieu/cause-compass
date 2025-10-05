@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CauseCompass - Company Ethical Alignment Tracker",
+  title: "CauseCompass",
   description: "Discover how companies align with your values. Get personalized ethical scores, detailed breakdowns, and find better alternatives.",
 };
 

@@ -9,6 +9,7 @@ import { ScoreBar } from '@/components/ScoreBar'
 import { TagBadge } from '@/components/TagBadge'
 import { AlternativeList } from '@/components/AlternativeList'
 import { AI_Summary } from '@/components/AI_Summary'
+import { FeedbackForm } from '@/components/FeedbackForm'
 import CompanyPageClient from './CompanyPageClient'
 // Define Stance enum locally to avoid import issues
 enum Stance {
@@ -239,6 +240,11 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
         {company.alternatives.length > 0 && (
           <AlternativeList alternatives={company.alternatives} />
         )}
+
+        {/* Feedback Form */}
+        <div className="mt-8">
+          <FeedbackForm companyId={company.id} />
+        </div>
       </div>
     )
   } catch {

@@ -96,3 +96,15 @@ model AppUser {
 
   @@map("app_users")
 }
+
+model Feedback {
+  id           String   @id @default(uuid())
+  user         String   // user identifier (could be email or user ID)
+  company      String   // company identifier (could be company ID or name)
+  feedbackText String   // the feedback content
+  urls         String[] // list of URLs as strings
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("feedback")
+}
