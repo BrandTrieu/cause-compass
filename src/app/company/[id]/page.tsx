@@ -225,8 +225,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
           </CardContent>
         </Card>
 
-        {/* Sources */}
-        {company.sources.length > 0 && (
+        {/* {company.sources.length > 0 && (
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>Additional Sources</CardTitle>
@@ -235,7 +234,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
               <SourceList sources={company.sources} />
             </CardContent>
           </Card>
-        )}
+        )} */}
 
         {/* Alternatives */}
         {company.alternatives.length > 0 && (
