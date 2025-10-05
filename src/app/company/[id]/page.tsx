@@ -7,10 +7,12 @@ import { Badge } from '@/components/ui/Badge'
 import { ScoreBar } from '@/components/ScoreBar'
 import { TagBadge } from '@/components/TagBadge'
 import { AlternativeList } from '@/components/AlternativeList'
-import { AI_Summary } from '@/components/AI_Summary'
 import { FeedbackForm } from '@/components/FeedbackForm'
+import { AI_Summary } from '@/components/AI_Summary'
 import { ErrorHandler } from './ErrorHandler'
 import CompanyPageClient from './CompanyPageClient'
+import { prisma } from '@/lib/db/prisma'
+import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
 // Define Stance enum locally to avoid import issues
 enum Stance {
   supports = 'supports',
@@ -57,27 +59,101 @@ interface CompanyDetail {
   }>
 }
 
-async function getCompanyDetails(id: string, mode: 'user' | 'guest'): Promise<CompanyDetail> {
-  const params = new URLSearchParams({ mode })
-  
-  const { cookies } = await import('next/headers')
-  const cookieStore = await cookies()
-  
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/companies/${id}?${params}`, {
-    cache: 'no-store',
-    headers: {
-      'Cookie': cookieStore.toString()
+async function getCompanyDetails(id: string): Promise<CompanyDetail> {
+  // Use default guest preferences for now
+  // User authentication in server components can be enhanced later
+  const prefs: Prefs = defaultGuestPrefs
+
+  // Fetch company with all related data
+  const company = await prisma.company.findUnique({
+    where: { id },
+    include: {
+      facts: {
+        include: { tag: true }
+      },
+      sources: {
+        orderBy: [
+          { reliability: 'desc' },
+          { publishedAt: 'desc' }
+        ],
+        take: 5
+      }
     }
   })
 
-  if (!response.ok) {
-    if (response.status === 404) {
-      notFound()
-    }
-    throw new Error('Failed to fetch company details')
+  if (!company) {
+    notFound()
   }
 
-  return response.json()
+  // Calculate score
+  const facts: Fact[] = company.facts.map(fact => ({
+    tagKey: fact.tag.key,
+    stance: fact.stance,
+    confidence: fact.confidence
+  }))
+
+  const score = companyScore(prefs, facts)
+
+  // Format facts breakdown
+  const breakdown = company.facts.map(fact => ({
+    tagKey: fact.tag.key,
+    tagName: fact.tag.tag_name,
+    stance: fact.stance as Stance,
+    confidence: fact.confidence,
+    notes: fact.notes || undefined,
+    sourceUrls: fact.sourceUrls
+  }))
+
+  // Get alternatives (same category, different company, sorted by score)
+  const alternatives = await prisma.company.findMany({
+    where: {
+      category: company.category,
+      id: { not: company.id }
+    },
+    include: {
+      facts: {
+        include: { tag: true }
+      }
+    },
+    take: 5
+  })
+
+  const alternativesWithScores = alternatives.map(alt => {
+    const altFacts: Fact[] = alt.facts.map(fact => ({
+      tagKey: fact.tag.key,
+      stance: fact.stance,
+      confidence: fact.confidence
+    }))
+    
+    const altScore = companyScore(prefs, altFacts)
+    
+    return {
+      id: alt.id,
+      name: alt.name,
+      category: alt.category as string,
+      summary: alt.summary || undefined,
+      logoUrl: alt.logoUrl || undefined,
+      score: altScore
+    }
+  })
+
+  // Filter alternatives to only show companies with higher scores
+  const betterAlternatives = alternativesWithScores
+    .filter(alt => alt.score > score)
+    .sort((a, b) => b.score - a.score)
+
+  return {
+    id: company.id,
+    name: company.name,
+    category: company.category,
+    website: company.website || undefined,
+    summary: company.summary || undefined,
+    logoUrl: company.logoUrl || undefined,
+    score,
+    breakdown,
+    sources: company.sources,
+    alternatives: betterAlternatives.slice(0, 5)
+  }
 }
 
 const tagMap: Record<string, string> = {
@@ -116,7 +192,7 @@ const isSvgLogo = (url?: string) => {
 
 async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest' }) {
   try {
-    const company = await getCompanyDetails(id, mode)
+    const company = await getCompanyDetails(id)
 
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -243,11 +319,11 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
         {company.alternatives.length > 0 && (
           <AlternativeList alternatives={company.alternatives} />
         )}
-
         {/* Feedback Form */}
         <div className="mt-8">
           <FeedbackForm companyId={company.id} />
         </div>
+
       </div>
     )
   } catch {
