@@ -5,7 +5,7 @@ import { defaultGuestPrefs } from '@/lib/db/scoring'
 
 export async function POST() {
   try {
-    const supabase = createSupabaseServerClient()
+    const supabase = await createSupabaseServerClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user?.email) {

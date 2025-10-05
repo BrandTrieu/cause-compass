@@ -11,7 +11,7 @@ import { Prefs } from '@/lib/validation/prefs'
 import { defaultGuestPrefs } from '@/lib/db/scoring'
 
 export default function PreferencesPage() {
-  const [user, setUser] = useState<{ email: string } | null>(null)
+  const [user, setUser] = useState<{ email?: string } | null>(null)
   const [prefs, setPrefs] = useState<Prefs>(defaultGuestPrefs)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -28,7 +28,7 @@ export default function PreferencesPage() {
         return
       }
       setUser(user)
-      await loadPreferences(user.email!)
+      await loadPreferences()
     }
     getUser()
   }, [router])

@@ -22,7 +22,7 @@ export function SourceList({ sources, className }: SourceListProps) {
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-800 underline"
             >
-              {source.title || (typeof window !== 'undefined' ? new URL(source.url).hostname : source.url)}
+              {source.title || source.url.replace(/^https?:\/\//, '').split('/')[0]}
             </a>
             {source.publisher && (
               <span className="text-gray-500 ml-2">

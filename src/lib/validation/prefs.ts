@@ -13,6 +13,9 @@ const validTagKeys = [
   'data_privacy'
 ] as const
 
+// Define the Prefs type first
+export type Prefs = Record<string, number>
+
 // Create a schema for preferences - make values optional and provide defaults
 export const prefsSchema = z.record(
   z.enum(validTagKeys),
@@ -40,8 +43,6 @@ export const prefsSchema = z.record(
   
   return defaultPrefs as Prefs
 })
-
-export type Prefs = z.infer<typeof prefsSchema>
 
 // Validation function for preferences
 export function validatePrefs(prefs: unknown): Prefs {

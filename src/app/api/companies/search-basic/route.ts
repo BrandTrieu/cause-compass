@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
 import { createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
+import { Category } from '@prisma/client'
 
 export async function GET(request: NextRequest) {
   try {
@@ -51,7 +52,7 @@ export async function GET(request: NextRequest) {
             category: {
               in: [
                 'RESTAURANT', 'APPAREL', 'GROCERY', 'TECH', 'FINANCE', 'OTHER'
-              ].filter(cat => cat.toLowerCase().includes(q.toLowerCase()))
+              ].filter(cat => cat.toLowerCase().includes(q.toLowerCase())) as Category[]
             }
           }
         ]
