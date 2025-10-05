@@ -6,6 +6,8 @@ import Image from "next/image";
 import {
   FaChild,
 } from "react-icons/fa";
+import { AiOutlineWoman } from "react-icons/ai";
+
 
 
 
@@ -65,7 +67,7 @@ const causes: Cause[] = [
     key: "women_workplace",
     name: "Women in the Workplace",
     description: "Gender equality and workplace diversity",
-    imageUrl: "/icons/woman.png",
+    icon: AiOutlineWoman,
     color: "text-pink-600",
   },
   {
