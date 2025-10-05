@@ -32,13 +32,13 @@ export async function POST(req: Request) {
     const text = result.response.text();
 
     // Try to pull citations from grounding metadata (if present)
-    const cand = result.response.candidates?.[0] as any;
+    const cand = result.response.candidates?.[0] as { groundingMetadata?: { citations?: Array<{ uri?: string; web?: { uri?: string }; title?: string; web?: { title?: string } }> } };
     const gm = cand?.groundingMetadata;
     const citations =
-      gm?.citations?.map((c: any) => ({
+      gm?.citations?.map((c) => ({
         url: c.uri || c.web?.uri,
         title: c.title || c.web?.title || null,
-      }))?.filter((c: any) => !!c.url) ?? [];
+      }))?.filter((c) => !!c.url) ?? [];
 
     return NextResponse.json({ ok: true, model: MODEL_ID, answer: text, citations });
   } catch (err) {

@@ -73,7 +73,7 @@ async function main() {
     )
   );
 
-  const tags = await prisma.tag.findMany({ where: { key: { in: TAG_KEYS as any } } });
+  const tags = await prisma.tag.findMany({ where: { key: { in: TAG_KEYS } } });
   const tagByKey = new Map(tags.map((t) => [t.key, t]));
 
   // --- 1) Upsert companies (controversials + alternatives) ---
@@ -109,7 +109,7 @@ async function main() {
       website: "https://about.google",
       summary:
         "Search and cloud giant; strong climate targets, significant privacy and antitrust actions against it.",
-      logoUrl: "https://cdn.simpleicons.org/google",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png",
     },
     {
       name: "Samsung",

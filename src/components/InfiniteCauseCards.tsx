@@ -4,15 +4,8 @@ import { Card, CardContent } from "@/components/ui/Card";
 import InfiniteScrollCards from "./InfiniteScrollCards";
 import Image from "next/image";
 import {
-  FaLeaf,
-  FaRainbow,
-  FaShieldAlt,
-  FaHandshake,
-  FaFlag,
   FaChild,
 } from "react-icons/fa";
-import { IoWomanSharp } from "react-icons/io5";
-import { FaDog } from "react-icons/fa6";
 
 
 

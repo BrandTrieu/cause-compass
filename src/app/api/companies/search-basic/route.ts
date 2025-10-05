@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { companyScore, defaultGuestPrefs, type Prefs, type Fact } from '@/lib/db/scoring'
-import { createSupabaseServerClient, createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
+import { createSupabaseServerClientFromRequest } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest) {
   try {
@@ -66,9 +66,9 @@ export async function GET(request: NextRequest) {
     console.log('Found companies:', companies.length)
 
     // Calculate real scores using the same logic as company page
-    const results = companies.map((company: any) => {
+    const results = companies.map((company) => {
       // Convert facts to the format expected by companyScore
-      const facts: Fact[] = company.facts.map((fact: any) => ({
+      const facts: Fact[] = company.facts.map((fact) => ({
         tagKey: fact.tag.key,
         stance: fact.stance,
         confidence: fact.confidence
@@ -79,9 +79,9 @@ export async function GET(request: NextRequest) {
 
       // Get top tags (sorted by confidence)
       const topTags = company.facts
-        .sort((a: any, b: any) => b.confidence - a.confidence)
+        .sort((a, b) => b.confidence - a.confidence)
         .slice(0, 3)
-        .map((fact: any) => ({
+        .map((fact) => ({
           tagKey: fact.tag.key,
           stance: fact.stance,
           confidence: fact.confidence
@@ -110,12 +110,12 @@ export async function GET(request: NextRequest) {
 
     // If we found companies, also get related companies from the same categories
     if (results.length > 0 && q.trim()) {
-      const categories = [...new Set(results.map((r: any) => r.category))]
+      const categories = [...new Set(results.map((r) => r.category))]
       
       for (const category of categories) {
         const relatedCompanies = await prisma.company.findMany({
           where: {
-            category: category as any,
+            category: category,
             NOT: {
               name: {
                 contains: q,
@@ -134,7 +134,7 @@ export async function GET(request: NextRequest) {
         // Add related companies with real scoring
         for (const company of relatedCompanies) {
           // Convert facts to the format expected by companyScore
-          const facts: Fact[] = company.facts.map((fact: any) => ({
+          const facts: Fact[] = company.facts.map((fact) => ({
             tagKey: fact.tag.key,
             stance: fact.stance,
             confidence: fact.confidence
@@ -145,9 +145,9 @@ export async function GET(request: NextRequest) {
 
           // Get top tags (sorted by confidence)
           const topTags = company.facts
-            .sort((a: any, b: any) => b.confidence - a.confidence)
+            .sort((a, b) => b.confidence - a.confidence)
             .slice(0, 3)
-            .map((fact: any) => ({
+            .map((fact) => ({
               tagKey: fact.tag.key,
               stance: fact.stance,
               confidence: fact.confidence
@@ -180,7 +180,7 @@ export async function GET(request: NextRequest) {
     const uniqueResults = results.filter((company, index, self) => 
       index === self.findIndex(c => c.id === company.id)
     )
-    uniqueResults.sort((a: any, b: any) => b.score - a.score)
+    uniqueResults.sort((a, b) => b.score - a.score)
 
     return NextResponse.json(uniqueResults)
   } catch (error: unknown) {

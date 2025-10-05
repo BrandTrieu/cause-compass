@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { PreferenceSliders } from '@/components/PreferenceSliders'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Toast } from '@/components/ui/Toast'
 import { supabase } from '@/lib/supabase/client'
@@ -11,10 +11,9 @@ import { Prefs } from '@/lib/validation/prefs'
 import { defaultGuestPrefs } from '@/lib/db/scoring'
 
 export default function PreferencesPage() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<{ email: string } | null>(null)
   const [prefs, setPrefs] = useState<Prefs>(defaultGuestPrefs)
   const [isLoading, setIsLoading] = useState(true)
-  const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
@@ -34,7 +33,7 @@ export default function PreferencesPage() {
     getUser()
   }, [router])
 
-  const loadPreferences = async (email: string) => {
+  const loadPreferences = async () => {
     try {
       const response = await fetch('/api/prefs')
       if (response.ok) {
@@ -49,7 +48,6 @@ export default function PreferencesPage() {
   }
 
   const handleSave = async (newPrefs: Prefs) => {
-    setIsSaving(true)
     setError('')
 
     try {
@@ -71,15 +69,15 @@ export default function PreferencesPage() {
       setToastMessage('Preferences saved successfully!')
       setToastType('success')
       setShowToast(true)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Unknown error')
       
       // Show error toast
       setToastMessage('Failed to save preferences. Please try again.')
       setToastType('error')
       setShowToast(true)
     } finally {
-      setIsSaving(false)
+      // Save completed
     }
   }
 

@@ -54,12 +54,12 @@ export function CompanyCard({
     if (logoUrl) return logoUrl
     
     // Generate logo using a service like Clearbit or use initials
-    const initials = companyName
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
+    // const initials = companyName
+    //   .split(' ')
+    //   .map(word => word[0])
+    //   .join('')
+    //   .toUpperCase()
+    //   .slice(0, 2)
     
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(companyName)}&background=random&color=fff&size=64&bold=true&format=png`
   }
