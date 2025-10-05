@@ -4,11 +4,11 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
 import { ScoreBar } from '@/components/ScoreBar'
 import { TagBadge } from '@/components/TagBadge'
 import { AlternativeList } from '@/components/AlternativeList'
 import { AI_Summary } from '@/components/AI_Summary'
+import { ErrorHandler } from './ErrorHandler'
 import CompanyPageClient from './CompanyPageClient'
 // Define Stance enum locally to avoid import issues
 enum Stance {
@@ -254,16 +254,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
               Something went wrong while loading the company details. Please try again.
             </p>
             <div className="flex gap-4 justify-center">
-              <Button onClick={() => {
-                window.location.reload()
-              }}>
-                Try Again
-              </Button>
-              <Button variant="outline" onClick={() => {
-                window.location.href = '/search'
-              }}>
-                Back to Search
-              </Button>
+              <ErrorHandler />
             </div>
           </CardContent>
         </Card>
