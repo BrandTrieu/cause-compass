@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey = process.env.GEMINI_API_KEY!;
-const MODEL_ID = "gemini-2.5-flash"; // fast + supports grounding
+const MODEL_ID = "gemini-2.5-flash";
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
             parts: [{ text: `Use web search to answer concisely and cite sources.\n\nQuery: ${q}` }],
           },
         ],
-        tools: [{ googleSearchRetrieval: {} }], // 👈 camelCase for the Node SDK
+        tools: [{ googleSearchRetrieval: {} }], 
         generationConfig: {
           temperature: 0.4,
           maxOutputTokens: 400,
