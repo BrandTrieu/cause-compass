@@ -109,7 +109,7 @@ async function main() {
       website: "https://about.google",
       summary:
         "Search and cloud giant; strong climate targets, significant privacy and antitrust actions against it.",
-      logoUrl: "https://cdn.simpleicons.org/google",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png",
     },
     {
       name: "Samsung",
