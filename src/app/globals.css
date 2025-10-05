@@ -37,7 +37,7 @@ body {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--primary);
   cursor: pointer;
   border: 2px solid #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -47,7 +47,7 @@ body {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--primary);
   cursor: pointer;
   border: 2px solid #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

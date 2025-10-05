@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase/client'
 import { FaCompass } from "react-icons/fa";
 
 export function Header() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<{ email?: string } | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const router = useRouter()
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -68,7 +68,7 @@ export function Header() {
                     className="flex items-center space-x-2 text-white hover:text-accent-1 transition-colors"
                 >
                   <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -85,7 +85,7 @@ export function Header() {
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsDropdownOpen(false)}
                     >
-                      Preferences
+                      Settings
                     </Link>
                     <button
                       onClick={handleSignOut}

@@ -37,12 +37,15 @@ interface CompanyDetail {
   }>
   sources: Array<{
     id: string
+    title: string | null
+    companyId: string | null
+    tagId: string | null
     url: string
-    title?: string
-    publisher?: string
-    publishedAt?: string
-    reliability?: number
-    claimExcerpt?: string
+    publisher: string | null
+    publishedAt: Date | null
+    reliability: number | null
+    claimExcerpt: string | null
+    createdAt: Date
   }>
   alternatives: Array<{
     id: string
@@ -108,7 +111,7 @@ const isSvgLogo = (url?: string) => {
   return url.includes('.svg') || url.includes('simpleicons.org') || url.includes('worldvectorlogo.com')
 }
 
-async function CompanyDetails({ id, mode, scoreFromUrl }: { id: string; mode: 'user' | 'guest'; scoreFromUrl: number | null }) {
+async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest' }) {
   try {
     const company = await getCompanyDetails(id, mode)
 
@@ -149,17 +152,16 @@ async function CompanyDetails({ id, mode, scoreFromUrl }: { id: string; mode: 'u
                     </a>
                   )}
                 </div>
-                <div className="text-sm text-text-muted mb-4">
-                  {mode === 'user' ? '✨ Personalized to your values' : '📊 Based on overall ethicality'}
-                </div>
               </div>
             </div>
             <div className="w-64">
-              <ScoreBar score={scoreFromUrl ?? company.score} />
+              <ScoreBar score={company.score} />
               <div className="mt-2 text-center">
-                <span className="text-sm font-medium text-text-muted">
-                  Score: {(scoreFromUrl ?? company.score).toFixed(3)}
-                </span>
+                <div className="text-sm font-medium text-text-muted">
+                  {mode === 'user' ? '✨ Personalized to your values' : '📊 Based on overall ethicality'}
+                </div>
+                <div className="text-sm text-text-muted mt-1">
+                </div>
               </div>
             </div>
           </div>
@@ -303,12 +305,11 @@ export default async function CompanyPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ mode?: string; score?: string }>
+  searchParams: Promise<{ mode?: string }>
 }) {
   const resolvedParams = await params
   const resolvedSearchParams = await searchParams
   const mode = (resolvedSearchParams.mode as 'user' | 'guest') || 'guest'
-  const scoreFromUrl = resolvedSearchParams.score ? parseFloat(resolvedSearchParams.score) : null
   
   // If no mode parameter, show the client component to detect auth
   if (!resolvedSearchParams.mode) {
@@ -318,7 +319,7 @@ export default async function CompanyPage({
   // If mode is provided, show the server component directly
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <CompanyDetails id={resolvedParams.id} mode={mode} scoreFromUrl={scoreFromUrl} />
+      <CompanyDetails id={resolvedParams.id} mode={mode} />
     </Suspense>
   )
 }

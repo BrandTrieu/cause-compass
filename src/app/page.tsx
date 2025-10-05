@@ -1,14 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import InfiniteCauseCards from '@/components/InfiniteCauseCards'
 import InfiniteCompanyCards from '@/components/InfiniteCompanyCards'
+import { supabase } from '@/lib/supabase/client'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [user, setUser] = useState<{ email?: string } | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      } catch (error) {
+        console.error('Auth check error:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,15 +73,17 @@ export default function Home() {
           </div>
         </form>
 
-        {/* Guest Mode Button */}
-        <div className="flex justify-center gap-4">
-          <Button variant="outline" onClick={handleGuestMode}>
-            Continue as Guest
-          </Button>
-          <Button variant="primary" onClick={() => router.push('/login')}>
-            Sign In for Personalized Results
-          </Button>
-        </div>
+        {/* Guest Mode Button - Only show if not signed in */}
+        {!isLoading && !user && (
+          <div className="flex justify-center gap-4">
+            <Button variant="outline" onClick={handleGuestMode}>
+              Continue as Guest
+            </Button>
+            <Button variant="primary" onClick={() => router.push('/login')}>
+              Sign In for Personalized Results
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Featured Causes */}

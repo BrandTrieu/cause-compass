@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Prefs } from '@/lib/validation/prefs'
@@ -40,7 +40,7 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
   const [isSaving, setIsSaving] = useState(false)
 
   const handleSliderChange = (tagKey: string, value: number) => {
-    setPrefs(prev => ({
+    setPrefs((prev: Prefs) => ({
       ...prev,
       [tagKey]: value
     }))
@@ -63,10 +63,17 @@ export function PreferenceSliders({ initialPrefs, onSave, className }: Preferenc
   }
 
   const getSliderColor = (value: number) => {
-    if (value <= 0.2) return '#9CA3AF' // Grey for low importance
-    if (value <= 0.5) return '#FDE047' // Yellow for medium importance
-    if (value <= 0.8) return '#FB923C' // Orange for high importance
-    return '#EF4444' // Red for very high importance
+    
+    if (value <= 0) return '#9CA3AF' 
+    
+    const greyR = 156, greyG = 163, greyB = 175
+    const greenR = 34, greenG = 197, greenB = 94 
+    
+    const r = Math.round(greyR + (greenR - greyR) * value)
+    const g = Math.round(greyG + (greenG - greyG) * value)
+    const b = Math.round(greyB + (greenB - greyB) * value)
+    
+    return `rgb(${r}, ${g}, ${b})`
   }
 
   return (
