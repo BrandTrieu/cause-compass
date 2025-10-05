@@ -6,6 +6,8 @@ import Image from "next/image";
 import {
   FaChild,
 } from "react-icons/fa";
+import { AiOutlineWoman } from "react-icons/ai";
+
 
 
 
@@ -19,6 +21,13 @@ interface Cause {
 }
 
 const causes: Cause[] = [
+  {
+    key: "justice_for_ukraine",
+    name: "Justice for Ukraine",
+    description: "Support for Ukraine's sovereignty and territorial integrity",
+    imageUrl: "/icons/ukraine.png",
+    color: "text-blue-600",
+  },
   {
     key: "environmentally_friendly",
     name: "Environmentally Friendly",
@@ -41,13 +50,6 @@ const causes: Cause[] = [
     color: "text-blue-600",
   },
   {
-    key: "ethical_sourcing",
-    name: "Ethical Sourcing",
-    description: "Fair trade and supply chains",
-    imageUrl: "/icons/Fairtrade.png",
-    color: "text-purple-600",
-  },
-  {
     key: "free_palestine",
     name: "Free Palestine",
     description: "Support for Palestinian rights",
@@ -55,10 +57,17 @@ const causes: Cause[] = [
     color: "text-red-600",
   },
   {
+    key: "ethical_sourcing",
+    name: "Ethical Sourcing",
+    description: "Fair trade and supply chains",
+    imageUrl: "/icons/Fairtrade.png",
+    color: "text-purple-600",
+  },
+  {
     key: "women_workplace",
     name: "Women in the Workplace",
     description: "Gender equality and workplace diversity",
-    imageUrl: "/icons/woman.png",
+    icon: AiOutlineWoman,
     color: "text-pink-600",
   },
   {
@@ -75,13 +84,7 @@ const causes: Cause[] = [
     imageUrl:"/icons/animalrights.jpg",
     color: "text-pink-500",
   },
-  {
-    key: "justice_for_ukraine",
-    name: "Justice for Ukraine",
-    description: "Support for Ukraine's sovereignty and territorial integrity",
-    imageUrl: "/icons/ukraine.png",
-    color: "text-blue-600",
-  },
+  
 ];
 
 export default function InfiniteCauseCards() {

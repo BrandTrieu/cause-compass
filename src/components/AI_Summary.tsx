@@ -45,7 +45,7 @@ export function AI_Summary({ companyId, mode }: AI_SummaryProps) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="p-6 pb-2">
          <div className="flex items-center justify-left">
            <CardTitle>
              <div className="flex flex-col gap-2">
