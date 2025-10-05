@@ -8,15 +8,11 @@ interface SearchErrorHandlerProps {
 
 export function SearchErrorHandler({ variant = 'retry' }: SearchErrorHandlerProps) {
   const handleGoHome = () => {
-    if (typeof window !== 'undefined') {
-      window.location.href = '/'
-    }
+    window.location.href = '/'
   }
 
   const handleRetry = () => {
-    if (typeof window !== 'undefined') {
-      window.location.reload()
-    }
+    window.location.reload()
   }
 
   if (variant === 'home') {

@@ -59,10 +59,13 @@ interface CompanyDetail {
 async function getCompanyDetails(id: string, mode: 'user' | 'guest'): Promise<CompanyDetail> {
   const params = new URLSearchParams({ mode })
   
+  const { cookies } = await import('next/headers')
+  const cookieStore = await cookies()
+  
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/companies/${id}?${params}`, {
     cache: 'no-store',
     headers: {
-      'Cookie': (await import('next/headers')).cookies().toString()
+      'Cookie': cookieStore.toString()
     }
   })
 
@@ -211,7 +214,7 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
                               rel="noopener noreferrer"
                               className="text-sm text-blue-600 hover:text-blue-800 underline"
                             >
-                              {typeof window !== 'undefined' ? new URL(url).hostname : url}
+                              {url.replace(/^https?:\/\//, '').split('/')[0]}
                             </a>
                           </li>
                         ))}
@@ -252,16 +255,12 @@ async function CompanyDetails({ id, mode }: { id: string; mode: 'user' | 'guest'
             </p>
             <div className="flex gap-4 justify-center">
               <Button onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.location.reload()
-                }
+                window.location.reload()
               }}>
                 Try Again
               </Button>
               <Button variant="outline" onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.location.href = '/search'
-                }
+                window.location.href = '/search'
               }}>
                 Back to Search
               </Button>

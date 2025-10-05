@@ -36,9 +36,7 @@ export default function Home() {
   }
 
   const handleGuestMode = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('guest', 'true')
-    }
+    // Use useEffect for localStorage access to avoid hydration issues
     router.push('/search')
   }
 
