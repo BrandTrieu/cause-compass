@@ -40,10 +40,21 @@ export async function GET(request: NextRequest) {
     // Search companies with their facts for real scoring
     const companies = await prisma.company.findMany({
       where: {
-        name: {
-          contains: q,
-          mode: 'insensitive'
-        }
+        OR: [
+          {
+            name: {
+              contains: q,
+              mode: 'insensitive'
+            }
+          },
+          {
+            category: {
+              in: [
+                'RESTAURANT', 'APPAREL', 'GROCERY', 'TECH', 'FINANCE', 'OTHER'
+              ].filter(cat => cat.toLowerCase().includes(q.toLowerCase()))
+            }
+          }
+        ]
       },
       include: {
         facts: {
@@ -165,10 +176,13 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Sort by score (highest first)
-    results.sort((a: any, b: any) => b.score - a.score)
+    // Remove duplicates and sort by score (highest first)
+    const uniqueResults = results.filter((company, index, self) => 
+      index === self.findIndex(c => c.id === company.id)
+    )
+    uniqueResults.sort((a: any, b: any) => b.score - a.score)
 
-    return NextResponse.json(results)
+    return NextResponse.json(uniqueResults)
   } catch (error: unknown) {
     console.error('Basic search error:', error)
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'

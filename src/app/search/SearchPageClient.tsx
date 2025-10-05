@@ -109,10 +109,12 @@ function SearchResults({ query, mode }: { query: string; mode: 'user' | 'guest' 
 
   // Separate main results from related companies
   const mainResults = results.filter(company => 
-    company.name.toLowerCase().includes(query.toLowerCase())
+    company.name.toLowerCase().includes(query.toLowerCase()) ||
+    company.category.toLowerCase().includes(query.toLowerCase())
   )
   const relatedResults = results.filter(company => 
-    !company.name.toLowerCase().includes(query.toLowerCase())
+    !company.name.toLowerCase().includes(query.toLowerCase()) &&
+    !company.category.toLowerCase().includes(query.toLowerCase())
   )
 
   return (
@@ -121,8 +123,13 @@ function SearchResults({ query, mode }: { query: string; mode: 'user' | 'guest' 
         <h2 className="text-2xl font-semibold text-foreground">
           {query ? `Results for "${query}"` : 'All Companies'}
         </h2>
+        {query && (
+          <div className="text-sm text-text-muted">
+            Found {results.length} companies
+          </div>
+        )}
         <div className="text-sm text-text-muted">
-          {mode === 'user' ? 'Personalized to your values' : 'Based on overall ethicality'}
+          {mode === 'user' ? '✨ Personalized to your values' : 'Based on overall ethicality'}
         </div>
       </div>
 
@@ -151,7 +158,6 @@ function SearchResults({ query, mode }: { query: string; mode: 'user' | 'guest' 
       {/* Related Companies */}
       {relatedResults.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Related Companies</h3>
           <div className="grid grid-cols-1 gap-0">
             {relatedResults.map((company) => (
               <CompanyCard
@@ -213,7 +219,7 @@ function SearchBar({ initialQuery }: { initialQuery: string }) {
         <div className="flex gap-4">
           <input
             type="text"
-            placeholder="Search for a company..."
+            placeholder="Search for a company or category..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1 px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground"
