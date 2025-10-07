@@ -1,4 +1,4 @@
-# EthicalBrand - Company Ethical Alignment Tracker
+# CauseCompass - Company Ethical Alignment Tracker
 
 A Next.js webapp that profiles companies by alignment with user-selected causes and provides sources, scores, and alternatives.
 
